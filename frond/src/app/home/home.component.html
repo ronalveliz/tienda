@@ -1,0 +1,108 @@
+
+<!--<div class="container">
+    <div class="row text-center ">
+      
+      <div class="col-6 mt-5">
+        <h1 class="mb-5">Potenciamos su Negocio a Través de Soluciones de Tecnologicas de Vanguardia</h1>
+        
+      </div>  
+      <div class="col-6">
+          <div  class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner">
+                <div class="carousel-item active">
+                  <img src="assets/img/cableado.webp" alt="trabajador" >
+                </div>
+                <div class="carousel-item">
+                  <img src="..." class="d-block w-100" alt="...">
+                </div>
+                <div class="carousel-item">
+                  <img src="..." class="d-block w-100" alt="...">
+                </div>
+              </div>
+            </div>
+      
+        </div>   
+  </div>
+  @for (producto of productos; track producto.id) {
+  <div class="container dos px-4 py-5" id="custom-cards">
+      <div class="row row-cols-1 row-cols-lg-3 align-items-stretch g-4 py-5">
+        <div class="col">
+          <div class="card card-cover h-100 overflow-hidden text-bg-dark rounded-4 shadow-lg" >
+            <img [src]="producto.photoUrl.startsWith('http') ? producto.photoUrl : ('http://localhost:8080/files/' + producto.photoUrl)"  class="custom-picture" [routerLink]="['/user', producto.id, 'detail']"alt="logo" height="100%" width="100%">
+            <div class="d-flex flex-column h-100 p-5 pb-3 text-white text-shadow-1">
+              <h3 class="pt-5 mt-5 mb-4 display-6 lh-1 fw-bold">{{producto.name}}</h3>
+              <ul class="d-flex list-unstyled mt-auto">
+                <li class="me-auto">
+                  <img [src]="producto.photoUrl.startsWith('http') ? producto.photoUrl : ('http://localhost:8080/files/' + producto.photoUrl)"  class="custom-picture" [routerLink]="['/user', producto.id, 'detail']"alt="logo" height="80" width="80">
+                </li>
+                <li class="d-flex align-items-center me-3">
+                  
+                  <small>{{producto.price}}</small>
+                </li>
+                <li class="d-flex align-items-center">
+                  <svg class="bi me-2" width="1em" height="1em"><use xlink:href="#calendar3"/></svg>
+                  <small>€</small>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div> 
+  </div> 
+    
+}     
+  -->
+<div class="album py-5 bg-body-tertiary">
+  @for (producto of productos; track producto.id) {
+    
+  <div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      <div class="col">
+        <div class="card shadow-sm">
+          <img class="card-img-cover" [src]="producto.photoUrl.startsWith('http') ? producto.photoUrl : ('http://localhost:8080/files/' + producto.photoUrl)" alt="{{producto.name}}">
+          <div class="card-body">
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+              </div>
+              <small class="text-body-secondary">9 mins</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card shadow-sm">
+          <img class="card-img-cover" [src]="producto.photoUrl.startsWith('http') ? producto.photoUrl : ('http://localhost:8080/files/' + producto.photoUrl)" alt="{{producto.name}}">
+          <div class="card-body">
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+              </div>
+              <small class="text-body-secondary">9 mins</small>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card shadow-sm">
+          <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+          <div class="card-body">
+            <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <div class="btn-group">
+                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+              </div>
+              <small class="text-body-secondary">9 mins</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>

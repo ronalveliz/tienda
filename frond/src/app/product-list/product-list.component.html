@@ -1,0 +1,50 @@
+<p>product-list works!</p>
+<div class="container">
+    <div class="raw">
+      <div class="col">
+        <h1 class="mt-5 mb-3">Listado de Productos</h1>
+        <button class="btn btn-secondary mb-3" routerLink="/productos/create">Crear Productos</button>
+        @if (showDeletedBookMessage) {
+        <ngb-alert type="success" (closed)="hideDeleteBookMessage()">Libro borrado correctamente</ngb-alert>
+        }
+  
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Id</th>
+              <th scope="col">Name</th>
+              <th scope="col">Descripcion</th>
+              <th scope="col">Price $</th>
+              <th scope="col">Stock</th>
+              <th scope="col">Img</th>
+              
+            </tr>
+          </thead>
+          <tbody>
+            @for ( producto of productos; track producto.id) {
+            <tr>
+              <th scope="row">{{producto.id}}</th>
+              <th>{{producto.name}}</th>
+              <th>{{producto.description}}</th>
+              <th>{{producto.price}}</th>
+              <th>{{producto.photoUrl}}</th>
+              <th><a class="badge text-bg-secondary text-decoration-none">
+                  
+                </a>
+              </th>
+              <td>
+                <button class="btn btn-info btn-sm" [routerLink]="['/productos', producto.id, 'detail']">Ver</button>
+                <button class="btn btn-success ms-2 btn-sm" [routerLink]="['/productos', producto.id, 'update']">Editar</button>
+                <button class="btn btn-warning ms-2 btn-sm" [routerLink]="['/productos', producto.id, 'reserve']">comprar</button><!--falta crear enrutado y componente-->
+                <button class="btn btn-danger ms-2 btn-sm" (click)="delete(producto)">Borrar</button>
+              </td>
+            </tr>
+            }
+  
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  
+  
