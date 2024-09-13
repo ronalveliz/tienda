@@ -12,6 +12,8 @@ export interface Producto{
     stock: number;
 
     photoUrl: string;
+
+    category: string;
 }
 
 
