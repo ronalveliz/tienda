@@ -43,26 +43,37 @@ public class ProductosController {
     }
 
     @PostMapping("productos")
-        private Productos create(@RequestParam("photo")MultipartFile file, Productos productos){
-            System.out.println(file.getOriginalFilename());
-            System.out.println(productos.getName());
-            productos.setPhotoUrl(fileService.store(file));
-
-        return  this.productoRepository.save(productos);
+    public Productos create(@RequestParam(value = "photo", required = false) MultipartFile file, Productos productos) {
+        if (file != null) {
+            String fileName = fileService.store(file);
+            productos.setPhotoUrl(fileName);
+        } else {
+            productos.setPhotoUrl("avatar.png");
+        }
+        return this.productoRepository.save(productos);
     }
 
     @PutMapping("productos/{id}")
-    private ResponseEntity<Productos> update(@RequestBody Productos productos,@PathVariable Long id){
-        if (productos.getId() == null){
-            return ResponseEntity.badRequest().build();
+    public ResponseEntity<?> updateProduct(
+            @PathVariable Long id,
+            Productos productos,
+            @RequestParam(value = "photo", required = false) MultipartFile file) {
+        if (!this.productoRepository.existsById(id))
+            return ResponseEntity.notFound().build();
+
+        if (file != null && !file.isEmpty()) {
+            String fileName = fileService.store(file);
+            productos.setPhotoUrl(fileName);
         }
-        Productos saveProductos = productoRepository.save(productos);
-        return ResponseEntity.ok(saveProductos);
+        return ResponseEntity.ok(this.productoRepository.save(productos));
     }
 
-    @DeleteMapping("productos/{id}")
-    public ResponseEntity<Productos> deleteById(@PathVariable Long id) {
-        productoRepository.deleteById(id);
-        return ResponseEntity.ok().build();
+    @DeleteMapping("/productos/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        if (productoRepository.existsById(id)) {
+            productoRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 }

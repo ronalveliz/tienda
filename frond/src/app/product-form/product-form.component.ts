@@ -19,6 +19,7 @@ export class ProductFormComponent implements OnInit{
     description: new FormControl<string>(''),
     price: new FormControl<number>(0.0),
     photoUrl: new FormControl<string>(''),
+    category: new FormControl<string>(''),
   });
 
     product: Producto | undefined;
@@ -68,6 +69,7 @@ export class ProductFormComponent implements OnInit{
     formData.append('description', this.producForm.get('description')?.value ?? '');
     formData.append('price', this.producForm.get('price')?.value?.toString() ?? '');
     formData.append('photoUrl', this.producForm.get('photoUrl')?.value ?? ''); 
+    formData.append('category', this.producForm.get('category')?.value ?? '');
 
     if(this.photoFile){
       formData.append("photo", this.photoFile);
