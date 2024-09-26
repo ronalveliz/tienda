@@ -1,50 +1,57 @@
-
-
 <div class="py-5 bg-body-tertiary">
   <!-- Barra de búsqueda -->
-  <div class="container mb-4">
-    <input
-      type="text"
-      class="form-control"
-      placeholder="Buscar productos..."
-      (ngModel)="searchTerm"
-      (ngModelChange)="filterProducts()"
-    />
+  <div class="container d-flex justify-content-center">
+    <div class="col-lg-8 col-md-10 mb-4">
+      <input type="text" class="form-control" placeholder="Buscar productos..." (ngModel)="searchTerm"
+        (ngModelChange)="filterProducts()" />
+    </div>
   </div>
 
-  <!-- Filtros de categoría -->
-  <div class="container mb-4">
-    <select class="form-select" (ngModel)="selectedCategory" (change)="filterProducts()">
-      <option value="">Todas las categorías</option>
+  <section class="layout">
+    <div class="sidebar">
+      <!-- Filtros de categoría -->
+      <div class="container mb-4">
+        <select class="form-select" (ngModel)="selectedCategory" (change)="filterProducts()">
+          <option value="">Todas las categorías</option>
 
-      @for (producto of productos; track producto.category) {
-        <option >{{ producto.category }}</option>
-      }
-    </select>
-  </div>
+          @for (producto of productos; track producto.category) {
+          <option>{{ producto.category }}</option>
+          }
+        </select>
+      </div>
 
-  <!-- Mostrar productos filtrados -->
-  <div class="container productos">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-      @for (producto of productos; track filteredProducts) {
-      <div class="col" >
-        <div class="card "  >
-          <div class="card-img">
-            <img [src]="producto.photoUrl.startsWith('http') ? producto.photoUrl : ('http://localhost:8080/files/' + producto.photoUrl)" alt="{{producto.name}}" width="100%"/>
-          </div>
-          <div class="card-body">
-            <p class="card-text">{{ producto.description }}</p>
-            <div class="d-flex justify-content-between align-items-center">
-              <div class="btn-group">
-                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
-              </div>
-              <small class="text-body-secondary">9 mins</small>
+    </div>
+    <div class="body">
+      <!-- Mostrar productos filtrados -->
+<div class="container productos">
+  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+    @for (producto of productos; track filteredProducts) {
+    <div class="col">
+      <div class="card ">
+        <div class="card-img">
+          <img
+            [src]="producto.photoUrl.startsWith('http') ? producto.photoUrl : ('http://localhost:8080/files/' + producto.photoUrl)"
+            alt="{{producto.name}}" width="100%" />
+        </div>
+        <div class="card-body">
+          <p class="card-text">{{ producto.description }}</p>
+          <div class="d-flex justify-content-between align-items-center">
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
             </div>
+            <small class="text-body-secondary">9 mins</small>
           </div>
         </div>
       </div>
-      }
     </div>
+    }
   </div>
 </div>
+    </div>
+  </section>
+
+</div>
+
+
+

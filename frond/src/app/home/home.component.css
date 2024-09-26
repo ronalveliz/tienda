@@ -1,7 +1,22 @@
  
-.product-img {
-    width: 100%;  /* Asegura que ocupe todo el ancho del contenedor */
-    height: 200px; /* Establece una altura fija */
-    object-fit: cover; /* Recorta la imagen para ajustarse al contenedor manteniendo la proporción */
-    object-position: center; /* Centra la imagen recortada */
-  }
+ 
+.layout {
+  width: 100%;
+
+  display: grid;
+  grid:
+    "sidebar body" 1fr
+    / auto 1fr;
+  gap: 8px;
+}
+
+.sidebar { grid-area: sidebar; }
+.body { grid-area: body; }
+ /*tajetas img*/
+.productos .card-img img {
+  width: 100%;            /* Las imágenes ocuparán todo el ancho de su contenedor */
+  height: 250px;          /* Fija la altura que desees, aquí está en 250px */
+  object-fit: cover;      /* Recorta la imagen para ajustarse sin distorsionar */
+  object-position: center;/* Centra la imagen en caso de recorte */
+  display: block;         /* Asegura que no haya espacio debajo de la imagen */
+}

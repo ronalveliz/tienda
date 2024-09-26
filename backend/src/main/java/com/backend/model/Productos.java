@@ -36,6 +36,8 @@ public class Productos {
 
     private String photoUrl;
 
+    private String category;
+
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;

@@ -45,10 +45,28 @@ public class Main {
             repoStore.saveAll(List.of(store1, store2, store3));
 
             // Crear y guardar productos
-            Productos p1 = new Productos(null, "Producto 1", "Descripción del producto 1", 50.00, "img", store1);
-            Productos p2 = new Productos(null, "Producto 2", "Descripción del producto 2", 75.00, "img", store2);
-            Productos p3 = new Productos(null, "Producto 3", "Descripción del producto 3", 100.00, "img", store3);
-            repoProducto.saveAll(List.of(p1, p2, p3));
+        // Crear y guardar productos
+        Productos p1 = new Productos(null, "Producto 1", "Descripción del producto 1", 50.00, "https://media.istockphoto.com/id/1729271656/es/foto/perezoso-de-dos-dedos-colgado-en-un-%C3%A1rbol-la-fortuna-costa-rica.jpg?s=2048x2048&w=is&k=20&c=gunJbj1aGRH5JCjuQFAzUt7OYQCxcv1yCp0-HwjG-bs=", "category1", store1);
+        Productos p2 = new Productos(null, "Producto 2", "Descripción del producto 2", 75.00, "https://cdn.pixabay.com/photo/2017/10/18/16/08/wolves-2864647_1280.jpg","category1", store1);
+        Productos p3 = new Productos(null, "Producto 3", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/09/01/16/16/white-2704666_1280.jpg","category1", store1);
+        Productos p4 = new Productos(null, "Producto 4", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2016/11/17/11/50/penguin-1831375_1280.jpg","category2", store1);
+        Productos p5 = new Productos(null, "Producto 5", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/10/18/16/08/wolves-2864647_1280.jpg","category1", store1);
+        Productos p6 = new Productos(null, "Producto 6", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2016/11/17/11/50/penguin-1831375_1280.jpg","category2", store1);
+        Productos p7 = new Productos(null, "Producto 7", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/10/18/16/08/wolves-2864647_1280.jpg","category1", store1);
+        Productos p8 = new Productos(null, "Producto 8", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/10/18/16/08/wolves-2864647_1280.jpg","category1", store1);
+        Productos p9 = new Productos(null, "Producto 9", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/10/18/16/08/wolves-2864647_1280.jpg","category3", store1);
+        Productos p10 = new Productos(null, "Producto 10", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/09/01/16/16/white-2704666_1280.jpg","category3", store1);
+        Productos p11 = new Productos(null, "Producto 11", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/10/18/16/08/wolves-2864647_1280.jpg","category2", store1);
+        Productos p12 = new Productos(null, "Producto 12", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2016/11/17/11/50/penguin-1831375_1280.jpg","category1", store1);
+        Productos p13 = new Productos(null, "Producto 13", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2016/11/17/11/50/penguin-1831375_1280.jpg","category2", store1);
+        Productos p14 = new Productos(null, "Producto 14", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/09/01/16/16/white-2704666_1280.jpg","category5", store1);
+        Productos p15 = new Productos(null, "Producto 15", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/09/01/16/16/white-2704666_1280.jpg","category5", store1);
+        Productos p16 = new Productos(null, "Producto 16", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/10/18/16/08/wolves-2864647_1280.jpg","category1", store1);
+        Productos p17 = new Productos(null, "Producto 17", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/10/18/16/08/wolves-2864647_1280.jpg","category1", store1);
+        Productos p18 = new Productos(null, "Producto 18", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/09/01/16/16/white-2704666_1280.jpg","category5", store1);
+        Productos p19 = new Productos(null, "Producto 19", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/10/18/16/08/wolves-2864647_1280.jpg","category1", store1);
+        Productos p20 = new Productos(null, "Producto 20", "Descripción del producto 3", 100.00, "https://cdn.pixabay.com/photo/2017/09/01/16/16/white-2704666_1280.jpg","category4", store1);
+        repoProducto.saveAll(List.of(p1, p2, p3, p4, p5, p6, p7, p8,p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20));
 
             // Crear y guardar pedidos
             Orderss order1 = new Orderss(null,store1,u1 );
