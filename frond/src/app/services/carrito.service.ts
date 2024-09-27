@@ -30,5 +30,13 @@ export class CarritoService {
     }
   }
 
+  cantidad(){
+    return this.listCarrito.length;
+  }
+
+  total(){
+    const total= this.listCarrito.reduce((sum , item) => sum + item.producto.price * item.cantidad , 0);
+  }
+
   constructor() { }
 }

@@ -1,6 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CarritoService } from '../services/carrito.service';
 import { Carrito } from '../model/carrito';
+import { RouterLink } from '@angular/router';
+import { clear } from 'console';
 
 @Component({
   selector: 'app-carrito',
@@ -17,7 +19,7 @@ export class CarritoComponent  implements OnInit{
 
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+   this.getListaCarrito();
   }
   
   getListaCarrito(){

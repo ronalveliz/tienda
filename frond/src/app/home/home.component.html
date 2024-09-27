@@ -25,23 +25,23 @@
       <!-- Mostrar productos filtrados -->
 <div class="container productos">
   <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    @for (producto of productos; track filteredProducts) {
+    @for (item of productos; track item.id) {
     <div class="col">
       <div class="card ">
         <div class="card-img">
           <img
-            [src]="producto.photoUrl.startsWith('http') ? producto.photoUrl : ('http://localhost:8080/files/' + producto.photoUrl)"
-            alt="{{producto.name}}" width="100%" />
+            [src]="item.photoUrl.startsWith('http') ? item.photoUrl : ('http://localhost:8080/files/' + item.photoUrl)"
+            alt="{{item.name}}" width="100%" />
         </div>
         <div class="card-body">
-          <p class="card-text">{{ producto.description }}</p>
+          <p class="card-text">{{ item.description }}</p>
           <div class="d-flex justify-content-between align-items-center">
-            
+         
             <div class="btn-group">
-              <button (click)="agregarProducto(item)" type="button" class="btn btn-sm btn-outline-secondary">Agregar</button>
+              <button (click)="agregarProducto(item)"  type="button" class="btn btn-sm btn-outline-secondary">Agregar</button>
               <button type="button" class="btn btn-sm btn-outline-secondary">Feo</button>
             </div>
-          
+            
             <small class="text-body-secondary">9 mins</small>
           </div>
         </div>
