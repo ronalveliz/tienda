@@ -1,8 +1,9 @@
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { Producto } from '../model/productos.model';
+import { CarritoService } from '../services/carrito.service';
 
 
 @Component({
@@ -19,6 +20,7 @@ export class HomeComponent implements OnInit{
   searchTerm: string = '';
   selectedCategory: string = '';
   categories: string[] = []; // Añade tus categorías aquí o recupera desde el backend
+  private carritoService = inject(CarritoService);
 
   constructor(private httpClient: HttpClient) {}
 
@@ -32,6 +34,7 @@ export class HomeComponent implements OnInit{
     });
   }
 
+
   filterProducts(): void {
     this.filteredProducts = this.productos.filter(producto => {
       const matchesSearchTerm = producto.name.toLowerCase().includes(this.searchTerm.toLowerCase());
@@ -44,4 +47,9 @@ export class HomeComponent implements OnInit{
     // Aquí puedes cargar las categorías desde el backend o definirlas manualmente
     this.categories = [...new Set(this.productos.map(p => p.category))];
   }
+  
+  agregarProducto(item :Producto){
+    this.carritoService.agregar(item);
+  }
+
 }

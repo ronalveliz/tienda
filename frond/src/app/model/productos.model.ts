@@ -9,8 +9,6 @@ export interface Producto{
 
     price: number;
 
-    stock: number;
-
     photoUrl: string;
 
     category: string;
