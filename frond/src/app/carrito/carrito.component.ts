@@ -3,17 +3,19 @@ import { CarritoService } from '../services/carrito.service';
 import { Carrito } from '../model/carrito';
 import { RouterLink } from '@angular/router';
 import { clear } from 'console';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-carrito',
   standalone: true,
-  imports: [],
+  imports: [CommonModule, FormsModule],
   templateUrl: './carrito.component.html',
   styleUrl: './carrito.component.css'
 })
 export class CarritoComponent  implements OnInit{
 
-  private carritoService = inject(CarritoService);
+  public carritoService = inject(CarritoService);
 
   listaCarrito: Carrito [] = [];
 
