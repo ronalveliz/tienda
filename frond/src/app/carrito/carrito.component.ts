@@ -28,4 +28,12 @@ export class CarritoComponent  implements OnInit{
     this.listaCarrito = this.carritoService.getCarrito();
   }
 
+  eliminarItem(index : number){
+    this.carritoService.eliminar(index);
+    this.getListaCarrito();
+  }
+  onkeyDown(event : any){
+    event.preventDefault();
+  }
+
 }

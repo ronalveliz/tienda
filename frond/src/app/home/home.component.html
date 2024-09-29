@@ -39,7 +39,7 @@
          
             <div class="btn-group">
               <button (click)="agregarProducto(item)"  type="button" class="btn btn-sm btn-outline-secondary">Agregar</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary">Feo</button>
+              <button type="button" class="btn btn-sm btn-outline-secondary" [routerLink]="['/productos', item.id, 'update']">Detalle</button>
             </div>
             
             <small class="text-body-secondary">9 mins</small>

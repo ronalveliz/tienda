@@ -1,7 +1,6 @@
 package com.backend.controller;
 
 import com.backend.model.Productos;
-import com.backend.model.ShoppingList;
 import com.backend.repository.ProductoRepository;
 import com.backend.service.FileService;
 import lombok.AllArgsConstructor;
@@ -11,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +34,7 @@ public class ProductosController {
     @GetMapping("productos/{id}")
     private ResponseEntity<Productos> finById(@PathVariable Long id){
         Optional<Productos> productos= productoRepository.findById(id);
-        if (productos.isPresent() ) {
+        if (productos.isPresent()) {
             return ResponseEntity.ok(productos.get());
         }else {
             return ResponseEntity.notFound().build();

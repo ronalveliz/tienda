@@ -3,10 +3,14 @@
         <div class="col">
             
     @if (productos) {
-        <img class="d-block mx-auto mb-4 "
-            [src]="'http://localhost:8080/files/' + productos.photoUrl" alt="" >
+        <div width="250px">
+            <img class="d-block mx-auto mb-4 "
+        
+        [src]="productos.photoUrl.startsWith('http') ? productos.photoUrl : ('http://localhost:8080/files/' + productos.photoUrl)"
+        alt="{{productos.name}}" width="100%" />
+        </div>
         <h1 class="mt-5 mb-5">Pantalla detalle de {{productos.name}}</h1>
-        <p>{{productos.id}}{{productos.name}}</p>
+        <p>{{productos.id}}{{productos.name}}{{productos.category}}</p>
     
         <button class="btn btn-success" [routerLink]="['/productos', productos.id , 'update']">Editar producto</button>
     }
