@@ -11,7 +11,7 @@ export interface Producto{
 
     photoUrl: string;
 
-    category: string;
+    categoria: string;
 }
 
 

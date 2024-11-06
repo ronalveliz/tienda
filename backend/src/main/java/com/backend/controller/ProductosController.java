@@ -41,6 +41,16 @@ public class ProductosController {
         }
     }
 
+    // Nuevo endpoint de búsqueda por categoría
+    @GetMapping("productos/categoria/{categoria}")
+    public ResponseEntity<List<Productos>> findByCategoria(@PathVariable String categoria) {
+        List<Productos> productos = productoRepository.findByCategoria(categoria);
+        if (productos.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(productos);
+    }
+
     @PostMapping("productos")
     public Productos create(@RequestParam(value = "photo", required = false) MultipartFile file, Productos productos) {
         if (file != null) {

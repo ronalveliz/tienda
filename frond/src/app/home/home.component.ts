@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit{
   filteredProducts: Producto[] = [];
   searchTerm: string = '';
   selectedCategory: string = '';
-  categories: string[] = []; // Añade tus categorías aquí o recupera desde el backend
+  categoria: string[] = []; // Añade tus categorías aquí o recupera desde el backend
   private carritoService = inject(CarritoService);
 
   constructor(private httpClient: HttpClient) {}
@@ -36,16 +36,25 @@ export class HomeComponent implements OnInit{
 
 
   filterProducts(): void {
-    this.filteredProducts = this.productos.filter(producto => {
-      const matchesSearchTerm = producto.name.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchesCategory = this.selectedCategory ? producto.category === this.selectedCategory : true;
-      return matchesSearchTerm && matchesCategory;
-    });
+    if (this.selectedCategory) {
+      // Llama al backend para obtener productos de una categoría específica
+      const url = `http://localhost:8080/productos/categoria/${this.selectedCategory}`;
+      this.httpClient.get<Producto[]>(url).subscribe(filtered => {
+        this.filteredProducts = filtered.filter(producto =>
+          producto.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+        );
+      });
+    } else {
+      // Si no hay categoría seleccionada, muestra todos los productos
+      this.filteredProducts = this.productos.filter(producto =>
+        producto.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    }
   }
 
   loadCategories(): void {
     // Aquí puedes cargar las categorías desde el backend o definirlas manualmente
-    this.categories = [...new Set(this.productos.map(p => p.category))];
+    this.categoria = [...new Set(this.productos.map(p => p.categoria))];
   }
   
   agregarProducto(item :Producto){

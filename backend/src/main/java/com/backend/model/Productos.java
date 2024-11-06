@@ -9,9 +9,6 @@ import jakarta.persistence.Id;
 
 import lombok.*;
 
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @AllArgsConstructor
@@ -36,11 +33,9 @@ public class Productos {
 
     private String photoUrl;
 
-    private String category;
+    private String categoria;
 
     @ManyToOne
     @JoinColumn(name = "store_id")
     private Store store;
-
-
 }

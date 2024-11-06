@@ -1,59 +1,36 @@
-<div class="py-5 bg-body-tertiary">
-  <!-- Barra de búsqueda -->
-  <div class="container d-flex justify-content-center">
-    <div class="col-lg-8 col-md-10 mb-4">
-      <input type="text" class="form-control" placeholder="Buscar productos..." (ngModel)="searchTerm"
-        (ngModelChange)="filterProducts()" />
-    </div>
-  </div>
 
   <section class="layout">
-    <div class="sidebar">
-      <!-- Filtros de categoría -->
-      <div class="container mb-4">
-        <select class="form-select" (ngModel)="selectedCategory" (change)="filterProducts()">
-          <option value="">Todas las categorías</option>
-
-          @for (producto of productos; track producto.category) {
-          <option>{{ producto.category }}</option>
-          }
-        </select>
-      </div>
-
-    </div>
+    
     <div class="body">
-      <!-- Mostrar productos filtrados -->
-<div class="container productos">
-  <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-    @for (item of productos; track item.id) {
-    <div class="col">
-      <div class="card ">
-        <div class="card-img">
-          <img
-            [src]="item.photoUrl.startsWith('http') ? item.photoUrl : ('http://localhost:8080/files/' + item.photoUrl)"
-            alt="{{item.name}}" width="100%" />
-        </div>
-        <div class="card-body">
-          <p class="card-text">{{ item.description }}</p>
-          <div class="d-flex justify-content-between align-items-center">
-         
-            <div class="btn-group">
-              <button (click)="agregarProducto(item)"  type="button" class="btn btn-sm btn-outline-secondary">Agregar</button>
-              <button type="button" class="btn btn-sm btn-outline-secondary" [routerLink]="['/productos', item.id, 'update']">Detalle</button>
+      <!-- Mostrar productos  -->
+      <div class="container productos">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+          @for (item of productos; track item.id) {
+          <div class="col">
+            <div class="card ">
+              <div class="card-img">
+                <img
+                  [src]="item.photoUrl.startsWith('http') ? item.photoUrl : ('http://localhost:8080/files/' + item.photoUrl)"
+                  alt="{{item.name}}" width="100%" />
+              </div>
+              <div class="card-body">
+                <p class="card-text">{{ item.description }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+
+                  <div class="btn-group">
+                    <button (click)="agregarProducto(item)" type="button"
+                      class="btn btn-sm btn-outline-secondary">Agregar</button>
+                    <button type="button" class="btn btn-sm btn-outline-secondary"
+                      [routerLink]="['/productos', item.id, 'update']">Detalle</button>
+                  </div>
+
+                  <small class="text-body-secondary">9 mins</small>
+                </div>
+              </div>
             </div>
-            
-            <small class="text-body-secondary">9 mins</small>
           </div>
+          }
         </div>
       </div>
     </div>
-    }
-  </div>
-</div>
-    </div>
-  </section>
-
-</div>
-
-
-
+</section>
