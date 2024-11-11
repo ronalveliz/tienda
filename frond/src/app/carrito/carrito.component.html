@@ -26,7 +26,7 @@
                                             alt="{{item.producto.name}}" width="50" height="60"/>
                                         </td>
                                         <td>{{item.producto.price | number: '1.2-2'}}</td>
-                                        <td>{{item.producto.categoria}}</td>
+                                        <td>{{item.producto.category.name}}</td>
                                         <td><input type="number" class="form-control" [(ngModel)]="item.cantidad" min="1" (keydown)="onkeyDown($event)"></td>
                                         <td>{{(item.producto.price * item.cantidad) | number: '1.2-2'}}</td>
                                         <td>

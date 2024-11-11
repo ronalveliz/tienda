@@ -43,8 +43,8 @@ public class ProductosController {
 
     // Nuevo endpoint de búsqueda por categoría
     @GetMapping("productos/categoria/{categoria}")
-    public ResponseEntity<List<Productos>> findByCategoria(@PathVariable String categoria) {
-        List<Productos> productos = productoRepository.findByCategoria(categoria);
+    public ResponseEntity<List<Productos>> findByCategory_Id(@PathVariable("categoria") Long categoria) {
+        List<Productos> productos = productoRepository.findByCategory_Id(categoria);
         if (productos.isEmpty()) {
             return ResponseEntity.noContent().build();
         }

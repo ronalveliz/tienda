@@ -2,12 +2,12 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Producto } from '../model/productos.model';
+import { Producto } from '../model/productos';
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [ReactiveFormsModule, HttpClientModule,RouterLink],
+  imports: [ReactiveFormsModule, HttpClientModule],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.css'
 })
@@ -19,7 +19,15 @@ export class ProductFormComponent implements OnInit{
     description: new FormControl<string>(''),
     price: new FormControl<number>(0.0),
     photoUrl: new FormControl<string>(''),
-    category: new FormControl<string>(''),
+    category: new FormGroup({
+      id: new FormControl<number | null>(null),
+      name: new FormControl<string>('')
+    }),
+    store: new FormGroup({
+      id: new FormControl<number | null>(null),
+      name: new FormControl<string>(''),
+      location: new FormControl<string>('')
+    })
   });
 
     product: Producto | undefined;
@@ -69,8 +77,21 @@ export class ProductFormComponent implements OnInit{
     formData.append('description', this.producForm.get('description')?.value ?? '');
     formData.append('price', this.producForm.get('price')?.value?.toString() ?? '');
     formData.append('photoUrl', this.producForm.get('photoUrl')?.value ?? ''); 
-    formData.append('category', this.producForm.get('category')?.value ?? '');
+    formData.append('descuento', this.producForm.get('descuento')?.value ? 'true' : 'false');
 
+    const category = this.producForm.get('category');
+    if (category?.value) {
+      formData.append('category.id', category.get('id')?.value?.toString() ?? '0');
+      formData.append('category.name', category.get('name')?.value ?? '');
+    }
+
+    const store = this.producForm.get('store');
+    if (store?.value) {
+      formData.append('store.id', store.get('id')?.value?.toString() ?? '0');
+      formData.append('store.name', store.get('name')?.value ?? '');
+      formData.append('store.location', store.get('location')?.value ?? '');
+    }
+    
     if(this.photoFile){
       formData.append("photo", this.photoFile);
     }

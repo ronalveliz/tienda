@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Carrito } from '../model/carrito';
-import { Producto } from '../model/productos.model';
+import { Producto } from '../model/productos';
 import { json } from 'stream/consumers';
 
 @Injectable({

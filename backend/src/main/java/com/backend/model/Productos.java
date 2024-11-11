@@ -33,7 +33,11 @@ public class Productos {
 
     private String photoUrl;
 
-    private String categoria;
+    private Boolean descuento;
+
+    @ManyToOne
+    @JoinColumn(name = "categoria_id")
+    private Category category;
 
     @ManyToOne
     @JoinColumn(name = "store_id")

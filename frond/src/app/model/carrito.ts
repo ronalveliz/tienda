@@ -1,4 +1,4 @@
-import { Producto } from "./productos.model";
+import { Producto } from "./productos";
 
 export class Carrito {
     producto: Producto;
