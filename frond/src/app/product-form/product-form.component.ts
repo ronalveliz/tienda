@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Producto } from '../model/productos';
+import { Category } from '../model/category';
+import { Store } from '../model/store';
 
 @Component({
   selector: 'app-product-form',
@@ -34,6 +36,8 @@ export class ProductFormComponent implements OnInit{
     isUpdate : boolean = false;
     photoFile : File |undefined;
     photoPreview : string | undefined;
+    categoria: Category[] = [];
+    store: Store[] = [];
 
     constructor( private httpCliente: HttpClient,
                  private router: Router, 
@@ -43,6 +47,11 @@ export class ProductFormComponent implements OnInit{
     this.activatedRouter.params.subscribe(params => {
       const id = params['id'];
       if(!id) return;
+
+         // Cargar las categorías y tiendas desde el backend
+        this.httpCliente.get<Category[]>('http://localhost:8080/categories').subscribe(categoria => this.categoria = categoria);
+
+        this.httpCliente.get<Store[]>('http://localhost:8080/stores').subscribe(stores => this.store = stores);
 
         this.httpCliente.get<Producto>('http://localhost:8080/productos/'+ id).subscribe(product =>{
 

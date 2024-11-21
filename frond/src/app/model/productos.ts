@@ -1,4 +1,5 @@
 
+// Definimos la interfaz
 export interface Producto{
    
     id: number;
@@ -23,7 +24,6 @@ export interface Producto{
         name: string;
         location: string;
     };
-
 }
 
 

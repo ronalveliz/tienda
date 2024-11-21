@@ -21,14 +21,25 @@
       }
       
       <form [formGroup]="producForm" (ngSubmit)="save()">
-
         <input type="hidden" formControlName="id">
 
         <div class="form-floating mb-3">
-          <input type="text" class="form-control" id="name" formControlName="name">
-          <label for="name">Name</label>
+          <select class="form-control" id="category" formGroupName="category">
+            <option [value]="1">Categoria 1</option>
+            <option [value]="2">Categoria 2</option>
+            <option [value]="3">Categoria 3</option>
+          </select>
+          <label for="category">Categoría</label>
         </div>
-        
+      
+        <div class="form-floating mb-3">
+          <select  id="store" class="form-control"  formGroupName="store">
+            <option [value]="1">Tienda A</option>
+            <option [value]="2">Tienda B</option>
+            <option [value]="3">Tienda C</option>
+          </select>
+          <label for="store">Tienda</label>
+        </div>
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="name" formControlName="name">
           <label for="name">Name</label>
@@ -38,8 +49,6 @@
           <input type="number" class="form-control" id="price" formControlName="price" step="0.01">
           <label for="price">Precio en euros (€)</label>
         </div>
-
-
 
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="description" formControlName="description" >
