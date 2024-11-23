@@ -33,13 +33,14 @@
         </div>
       
         <div class="form-floating mb-3">
-          <select  id="store" class="form-control"  formGroupName="store">
-            <option [value]="1">Tienda A</option>
-            <option [value]="2">Tienda B</option>
-            <option [value]="3">Tienda C</option>
-          </select>
+          @if (store) {
+            <select  id="store" class="form-control"  formGroupName="store">
+              <option [ngValue]="1">{{store}}</option>
+            </select>
+          }
           <label for="store">Tienda</label>
         </div>
+
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="name" formControlName="name">
           <label for="name">Name</label>

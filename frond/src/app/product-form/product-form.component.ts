@@ -22,11 +22,11 @@ export class ProductFormComponent implements OnInit{
     price: new FormControl<number>(0.0),
     photoUrl: new FormControl<string>(''),
     category: new FormGroup({
-      id: new FormControl<number | null>(null),
+      id: new FormControl<number>(0),
       name: new FormControl<string>('')
     }),
     store: new FormGroup({
-      id: new FormControl<number | null>(null),
+      id: new FormControl<number>(0),
       name: new FormControl<string>(''),
       location: new FormControl<string>('')
     })
@@ -47,12 +47,7 @@ export class ProductFormComponent implements OnInit{
     this.activatedRouter.params.subscribe(params => {
       const id = params['id'];
       if(!id) return;
-
          // Cargar las categorías y tiendas desde el backend
-        this.httpCliente.get<Category[]>('http://localhost:8080/categories').subscribe(categoria => this.categoria = categoria);
-
-        this.httpCliente.get<Store[]>('http://localhost:8080/stores').subscribe(stores => this.store = stores);
-
         this.httpCliente.get<Producto>('http://localhost:8080/productos/'+ id).subscribe(product =>{
 
           this.producForm.reset(product);
