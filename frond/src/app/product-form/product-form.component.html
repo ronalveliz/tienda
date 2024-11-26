@@ -1,6 +1,6 @@
 
 <div class="container">
-  <div class="raw">
+  <div class="row">
     <div class="col-4">
       @if (photoPreview) {
         <h2 class="my-5">Previsualización foto</h2>
@@ -24,17 +24,17 @@
         <input type="hidden" formControlName="id">
 
         <div class="form-floating mb-3">
-          <select class="form-control" id="category" formGroupName="category">
-            <option [value]="1">Categoria 1</option>
-            <option [value]="2">Categoria 2</option>
-            <option [value]="3">Categoria 3</option>
+          <select class="form-control" [(ngModel)]="product" formControlName="category" >
+            @for ( cate of categoria; track cate.name  ) {
+              <option [ngValue]="cate.name">{{ cate.name }}</option>
+            }
           </select>
           <label for="category">Categoría</label>
         </div>
       
         <div class="form-floating mb-3">
           @if (store) {
-            <select  id="store" class="form-control"  formGroupName="store">
+            <select  id="store"  class="form-control"  formGroupName="store">
               <option [ngValue]="1">{{store}}</option>
             </select>
           }
