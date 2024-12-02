@@ -6,9 +6,12 @@ import com.backend.repository.StoreRepository;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 import java.util.List;
+
+import static io.jsonwebtoken.security.Keys.password;
 
 
 @SpringBootApplication
@@ -37,9 +40,11 @@ public class Main {
 
 
             // Crear y guardar usuarios
-            User u1 = new User(null, "user1", "user1", "user1@gmail.com", "xxxx", "640364015");
-            User u2 = new User(null, "user2", "user2", "user2@gmail.com", "xxxx", "640364015");
-            User u3 = new User(null, "user3", "user3", "user3@gmail.com", "xxxx", "640364015");
+            PasswordEncoder passwordEncoder = context.getBean(PasswordEncoder.class);
+            User A1 = new User(null, "Admin", "Admin", "Admin@gmail.com", passwordEncoder.encode("admin1234"), "640364015", RolName.ROL_ADMIN,"avatar.png");
+            User u1 = new User(null, "user1", "user1", "user1@gmail.com", passwordEncoder.encode("admin1234"), "640364015", RolName.ROL_USER,"avatar.png");
+            User u2 = new User(null, "user2", "user2", "user2@gmail.com", passwordEncoder.encode("admin1234"), "640364015", RolName.ROL_USER,"avatar.png");
+            User u3 = new User(null, "user3", "user3", "user3@gmail.com", passwordEncoder.encode("admin1234"), "640364015", RolName.ROL_USER,"avatar.png");
             userRepo.saveAll(List.of(u1, u2, u3));
 
             // Crear y guardar tiendas

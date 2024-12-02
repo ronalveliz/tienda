@@ -1,9 +1,9 @@
 package com.backend.model;
 
+import io.swagger.v3.oas.annotations.info.Contact;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.Instant;
 import java.util.List;
 
 
@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Builder
 @Table(name = "clientes")
 public class User {
     @Id
@@ -31,5 +32,11 @@ public class User {
     private String password;
 
     private String phone;
+
+   @Enumerated(EnumType.STRING)
+    private RolName rolName;
+
+   private String PhotoUrl;
+
 
 }
