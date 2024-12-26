@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Category } from '../model/category';
+import { Category } from '../interface/category';
 
 @Component({
   selector: 'app-categoria',

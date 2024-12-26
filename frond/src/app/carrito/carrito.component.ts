@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { CarritoService } from '../services/carrito.service';
-import { Carrito } from '../model/carrito';
+import { Carrito } from '../interface/carrito';
 import { RouterLink } from '@angular/router';
 
 import { CommonModule } from '@angular/common';

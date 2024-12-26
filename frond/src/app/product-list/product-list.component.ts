@@ -2,7 +2,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
-import { Producto } from '../model/productos';
+import { Producto } from '../interface/productos';
 
 @Component({
   selector: 'app-productos',

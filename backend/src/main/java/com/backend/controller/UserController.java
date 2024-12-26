@@ -26,9 +26,17 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @AllArgsConstructor
 public class UserController {
+
     private final UserRepository repo;
     private final FileService fileService;
     private final PasswordEncoder passwordEncoder;
+
+
+    @GetMapping("user")
+    public List<User> findAll(){
+
+        return repo.findAll();
+    }
 
     @PostMapping("users/register")
     public void register(@RequestBody NuevoUsuarioRegister register) {
@@ -41,14 +49,17 @@ public class UserController {
                 .email(register.email())
                 .password(passwordEncoder.encode(register.password()))
                 .rolName(RolName.ROL_USER)
+                .firtsName(register.firstName())
+                .lastName(register.lastName())
+                .phone(register.phone())
+                .PhotoUrl(register.imgUser())
                 .build();
-
         this.repo.save(user);
     }
 
     @PostMapping("users/login")
     public TokenClas login(@RequestBody NuevoUsuarioRegister login) {
-
+        JwtTokenUtils.getCurrentUser().ifPresent(System.out::println);
         if (!this.repo.existsByEmail(login.email())) {
             throw new NoSuchElementException("User not found");
         }

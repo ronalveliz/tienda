@@ -2,9 +2,9 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { Producto } from '../model/productos';
-import { Category } from '../model/category';
-import { Store } from '../model/store';
+import { Producto } from '../interface/productos';
+import { Category } from '../interface/category';
+import { Store } from '../interface/store';
 
 @Component({
   selector: 'app-product-form',
