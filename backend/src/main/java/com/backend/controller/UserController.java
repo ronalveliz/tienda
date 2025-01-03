@@ -1,8 +1,7 @@
 package com.backend.controller;
 
-import ch.qos.logback.core.subst.Token;
 import com.backend.dto.NuevoUsuarioRegister;
-import com.backend.dto.TokenClas;
+import com.backend.dto.Token;
 import com.backend.model.RolName;
 import com.backend.model.User;
 import com.backend.repository.UserRepository;
@@ -58,7 +57,7 @@ public class UserController {
     }
 
     @PostMapping("users/login")
-    public TokenClas login(@RequestBody NuevoUsuarioRegister login) {
+    public Token login(@RequestBody NuevoUsuarioRegister login) {
         JwtTokenUtils.getCurrentUser().ifPresent(System.out::println);
         if (!this.repo.existsByEmail(login.email())) {
             throw new NoSuchElementException("User not found");
@@ -73,13 +72,13 @@ public class UserController {
             throw new BadCredentialsException("Credenciales incorrectas");
         }
 
-        // JWT Json Web TokenClas: jwt.io
+        // JWT Json Web Token: jwt.io
         // Generar token de acceso: eyJhbGciOiJIUzI1NiIsIn......
         // Generar el token: https://github.com/jwtk/jjwt?tab=readme-ov-file#creating-a-jwt
         Date issuedDate = new Date();
         long nextWeekMillis = TimeUnit.DAYS.toMillis(7);
         Date expirationDate = new Date(issuedDate.getTime() + nextWeekMillis);
-        byte[] key = Base64.getDecoder().decode("FZD5maIaX04mYCwsgckoBh1NJp6T3t62h2MVyEtdo3w="); // Clave secreta
+        byte[] key = Base64.getDecoder().decode("4QYC9CxV/6e9RKQDPLGx7eZLLIfTS3natiKdCU8mw8I="); // Clave secreta
 
         String token = Jwts.builder()
                 // id del usuario
@@ -97,7 +96,7 @@ public class UserController {
                 // Construye el token
                 .compact();
 
-        return new TokenClas(token);
+        return new Token(token);
     }
     // Get account
     @GetMapping("user/account")

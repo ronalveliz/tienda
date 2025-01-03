@@ -41,7 +41,7 @@ public class Main {
 
             // Crear y guardar usuarios
             PasswordEncoder passwordEncoder = context.getBean(PasswordEncoder.class);
-            User A1 = new User(null, "Admin", "Admin", "Admin@gmail.com", passwordEncoder.encode("admin1234"), "640364015", RolName.ROL_ADMIN,"avatar.png");
+            User A1 = new User(null, "Admin", "Admin", "Admin@gmail.com", passwordEncoder.encode("admin1234"), "640364015", RolName.ROL_USER,"avatar.png");
             User u1 = new User(null, "user1", "user1", "user1@gmail.com", passwordEncoder.encode("admin1234"), "640364015", RolName.ROL_USER,"avatar.png");
             User u2 = new User(null, "user2", "user2", "user2@gmail.com", passwordEncoder.encode("admin1234"), "640364015", RolName.ROL_USER,"avatar.png");
             User u3 = new User(null, "user3", "user3", "user3@gmail.com", passwordEncoder.encode("admin1234"), "640364015", RolName.ROL_USER,"avatar.png");

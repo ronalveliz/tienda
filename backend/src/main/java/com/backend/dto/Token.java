@@ -1,6 +1,6 @@
 package com.backend.dto;
 
-public record TokenClas(
+public record Token(
 
         String token
 ) {

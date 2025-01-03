@@ -1,27 +1,27 @@
 <body>
   <div class="wrapper">
       <div class="banner">
-        <form action="" class="form">
+        <form action="" class="form" [formGroup]="registerUserForm" (submit)="save()">
           <h1 class="inp title">Registrate</h1>
           <div class="inp">
-            <input type="text" class="input" placeholder="Nombre">
+            <input type="text" class="input" placeholder="Nombre" formControlName="firstName">
             <i class="fa-solid fa-user"></i>
           </div>
           <div class="inp">
-            <input type="number" class="input" placeholder="Telefono">
+            <input type="number" class="input" placeholder="Telefono" formControlName="phone">
             <i class="fa-solid fa-lock"></i>
           </div>
           <div class="inp">
-            <input type="email" class="input" placeholder="Correo">
+            <input type="email" class="input" placeholder="Correo" formControlName="email">
             <i class="fa-solid fa-envelope"></i>
           </div>
 
           <div class="inp">
-            <input type="password" class="input" placeholder="contraseña">
+            <input type="password" class="input" placeholder="contraseña" formControlName="password">
             <i class="fa-solid fa-lock"></i>
           </div>
           <div class="inp">
-            <input type="password" class="input" placeholder="contraseña">
+            <input type="password" class="input" placeholder="contraseña" formControlName="passwordConfirm">
             <i class="fa-solid fa-lock"></i>
           </div>
           <button class="submit">Registrate</button>
