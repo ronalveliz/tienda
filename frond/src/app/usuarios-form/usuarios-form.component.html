@@ -1,10 +1,24 @@
 <body>
   <div class="wrapper">
       <div class="banner">
+<<<<<<< Updated upstream
         <form action="" class="form" [formGroup]="registerUserForm" (submit)="save()">
+=======
+        <form action="" class="form" [formGroup]="userForm" (ngSubmit)="save()">
+
+>>>>>>> Stashed changes
           <h1 class="inp title">Registrate</h1>
+          <!-- formulario de registro-->
           <div class="inp">
             <input type="text" class="input" placeholder="Nombre" formControlName="firstName">
+<<<<<<< Updated upstream
+=======
+            @if (userForm.controls.firstName.touched && userForm.controls.firstName.errors) {
+              <div>
+                <small class="text-danger">Introduce un Nombre</small>
+              </div>
+              }
+>>>>>>> Stashed changes
             <i class="fa-solid fa-user"></i>
           </div>
           <div class="inp">

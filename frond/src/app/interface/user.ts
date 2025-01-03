@@ -9,5 +9,5 @@ export interface User {
     password: string;
     phone: string;
     role: Role;
-    PhotoUrl: string;
+    imgUser: string;
 }

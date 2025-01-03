@@ -6,6 +6,7 @@ import { ProductosComponent } from './product-list/product-list.component';
 import { CarritoComponent } from './carrito/carrito.component';
 import { LoginComponent } from './login/login.component';
 import { UsuariosFormComponent } from './usuarios-form/usuarios-form.component';
+import { AccountFormComponent } from './account-form/account-form.component';
 
 
 export const routes: Routes = [
@@ -40,5 +41,10 @@ export const routes: Routes = [
     {
         path: 'register',
        component: UsuariosFormComponent
+    },
+    {
+        path: 'account',
+        component: AccountFormComponent
     }
+
 ];
