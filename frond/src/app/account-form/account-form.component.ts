@@ -4,6 +4,7 @@ import { User } from '../interface/user';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 @Component({
   selector: 'app-account-form',
@@ -28,7 +29,7 @@ export class AccountFormComponent implements OnInit {
   photoPreview: string | undefined;
 
   constructor(private httpClient: HttpClient,
-                      //private authService: AuthenticationService,
+                      private authService: AuthenticationService,
                       private modalService: NgbModal,
                       private router: Router) { }
 
@@ -87,8 +88,10 @@ updateProfile() {
       this.httpClient.put<User>('http://localhost:8080/users/account', this.user)
         .subscribe(() => {
           this.router.navigateByUrl('/home');
-          if(this.user?.imgUser)
-            this.authService.avatarUrl.next(this.user?.imgUser);
+          if(this.user?.imgUser){
+            
+          }
+            //this.authService.avatarUrl.next(this.user?.imgUser);
           // TODO actualiar el avatrar en el authentication service 
           // authenticationService.updateAvatar(this.user?.avatar);
         });

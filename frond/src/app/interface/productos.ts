@@ -1,3 +1,5 @@
+import { Category } from "./category";
+import { Store } from "./store";
 
 // Definimos la interfaz
 export interface Producto{
@@ -14,16 +16,9 @@ export interface Producto{
 
     descuento: boolean;
 
-    category: {
-        id: number;
-        name: string;
-    };
+    category: Category;
 
-    store: {
-        id: number;
-        name: string;
-        location: string;
-    };
+    store: Store;
 }
 
 

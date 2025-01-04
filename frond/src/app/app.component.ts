@@ -12,4 +12,5 @@ import { NavbarComponent } from "./navbar/navbar.component";
 })
 export class AppComponent {
   title = 'frond';
+  
 }

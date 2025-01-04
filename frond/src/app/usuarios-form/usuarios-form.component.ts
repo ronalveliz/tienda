@@ -9,7 +9,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 @Component({
   selector: 'app-usuarios-form',
   standalone: true,
-  imports: [ReactiveFormsModule,RouterLink],
+  imports: [ReactiveFormsModule],
   templateUrl: './usuarios-form.component.html',
   styleUrl: './usuarios-form.component.css'
 })
@@ -20,7 +20,7 @@ export class UsuariosFormComponent implements OnInit {
   roles = Role; // Esto hará que los valores de la enum estén disponibles en el HTML
   showSpinner = true;
 
-  registerUserForm = new FormGroup({
+  userForm = new FormGroup({
     id: new FormControl (0),
     firstName: new FormControl('',Validators.required),
     lastName: new FormControl('',Validators.required),
@@ -56,7 +56,7 @@ export class UsuariosFormComponent implements OnInit {
 
   
   save(){
-    const user: User = this.registerUserForm.value as unknown as User;
+    const user: User = this.userForm.value as unknown as User;
     console.log(user)
       const url = 'http://localhost:8080/users/register';
        this.httpClient.post<User>(url,user).subscribe(backendUser =>{
