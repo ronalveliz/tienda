@@ -31,9 +31,17 @@
                 Product
               </a>
             </li>
-            @if (isLoggedIn) {
+            @if (userEmail) {
               <li>
-                <a href="#" class="nav-link text-primary">
+                <a href="#" class="nav-link text-secondary">
+                  <i class="bi bi-person-bounding-box"></i>
+                  {{userEmail}}
+                </a>
+              </li>
+            }
+            @if (isLoggedin) {
+              <li>
+                <a href="#" class="nav-link text-secondary" (click)="logout()">
                   <i class="bi bi-person-bounding-box"></i>
                   logout
                 </a>

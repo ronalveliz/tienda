@@ -7,6 +7,7 @@ import { CarritoComponent } from './carrito/carrito.component';
 import { LoginComponent } from './login/login.component';
 import { UsuariosFormComponent } from './usuarios-form/usuarios-form.component';
 import { AccountFormComponent } from './account-form/account-form.component';
+import { userLoggedIntGuard } from './authentication/user-logged-int.guard';
 
 
 export const routes: Routes = [
@@ -16,23 +17,28 @@ export const routes: Routes = [
     },
     {
         path:'productos',
-        component: ProductosComponent
+        component: ProductosComponent,
+        canActivate: [userLoggedIntGuard]
     },
     {
         path:'productos/:id/detail',
-        component: ProductoDetailComponent
+        component: ProductoDetailComponent,
+        canActivate: [userLoggedIntGuard]
     },
     {
         path:'productos/create',
-        component: ProductFormComponent
+        component: ProductFormComponent,
+        canActivate: [userLoggedIntGuard]
     },
     {
         path:'productos/:id/update',
-        component: ProductFormComponent
+        component: ProductFormComponent,
+        canActivate: [userLoggedIntGuard]
     },
     {
         path: 'carrito',
-        component: CarritoComponent
+        component: CarritoComponent,
+        canActivate: [userLoggedIntGuard]
     },
     {
         path: 'login',
@@ -44,7 +50,9 @@ export const routes: Routes = [
     },
     {
         path: 'account',
-        component: AccountFormComponent
+        component: AccountFormComponent,
+        canActivate: [userLoggedIntGuard]
+
     }
 
 ];

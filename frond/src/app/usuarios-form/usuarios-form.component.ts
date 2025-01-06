@@ -18,7 +18,7 @@ export class UsuariosFormComponent implements OnInit {
   
   users: User[] = [];
   roles = Role; // Esto hará que los valores de la enum estén disponibles en el HTML
-  showSpinner = true;
+  
 
   userForm = new FormGroup({
     id: new FormControl (0),
@@ -39,7 +39,7 @@ export class UsuariosFormComponent implements OnInit {
               private fb: FormBuilder
   ){}
   ngOnInit(): void {
-    window.scrollTo(0, 0); 
+     
   }
  
   passwordConfirmValidator(control: AbstractControl){
