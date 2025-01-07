@@ -1,80 +1,93 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { DecodedToken } from './decoded.token.service';
 import { jwtDecode } from 'jwt-decode';
-
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
   providedIn: 'root'
 })
-
 export class AuthenticationService {
 
-  // esto permite subcribirse y estar informado de  cuando el valor cambie
-  isLoggedin = new BehaviorSubject<boolean>(this.existsToken());
-  userEmail = new BehaviorSubject<string>(this.getUserEmail());
-  isAdmin = new BehaviorSubject<boolean>(this.getIsAdmin());
-  userId = new BehaviorSubject<string | null>(this.getUserId());
-  isTienda = new BehaviorSubject<boolean>(this.getIsTienda());
-  
-  avatarUrl = new BehaviorSubject<string>('');
+  isLoggedIn: BehaviorSubject<boolean>;
+  userEmail: BehaviorSubject<string>;
+  isAdmin: BehaviorSubject<boolean>;
+  userId: BehaviorSubject<number>;
 
-  constructor() { } 
+  constructor() {
+    this.isLoggedIn = new BehaviorSubject<boolean>(this.existsToken());
+    this.userEmail = new BehaviorSubject<string>(this.getUserEmail());
+    this.isAdmin = new BehaviorSubject<boolean>(this.getIsAdmin());
+    this.userId = new BehaviorSubject<number>(this.getUserId());
+  }
+
+  private isLocalStorageAvailable(): boolean {
+    try {
+      const test = 'test';
+      localStorage.setItem(test, test);
+      localStorage.removeItem(test);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  existsToken(): boolean {
+    if (this.isLocalStorageAvailable()) {
+      return !!localStorage.getItem('jwt_token');
+    }
+    return false;
+  }
 
   saveToken(token: string) {
-    localStorage.setItem('jwt_token', token);
-    this.isLoggedin.next(true);
-    this.userEmail.next(this.getUserEmail());
-    this.isAdmin.next(this.getIsAdmin());
-    this.userId.next(this.getUserId());
-    this.isTienda.next(this.getIsTienda());
-    
+    if (this.isLocalStorageAvailable()) {
+      localStorage.setItem('jwt_token', token);
+      this.isLoggedIn.next(true);
+      this.userEmail.next(this.getUserEmail());
+      this.isAdmin.next(this.getIsAdmin());
+      this.userId.next(this.getUserId());
+    }
   }
 
-  
-  existsToken() {
-    return !!localStorage.getItem('jwt_token');
-  }
   removeToken() {
-    localStorage.removeItem('jwt_token');
-    this.isLoggedin.next(false);
-    this.userEmail.next('');
-    this.isAdmin.next(false);
-    this.userId.next(null);
-    this.isTienda.next(false);
+    if (this.isLocalStorageAvailable()) {
+      localStorage.removeItem('jwt_token');
+      this.isLoggedIn.next(false);
+      this.userEmail.next('');
+      this.isAdmin.next(false);
+      this.userId.next(0);
+    }
   }
 
-  getUserEmail() {
-    const token =  localStorage.getItem('jwt_token');
-    if(!token) return '';
-    const decodedToken = jwtDecode(token) as DecodedToken;
-    return decodedToken.email;
+  getUserEmail(): string {
+    if (this.isLocalStorageAvailable()) {
+      const token = localStorage.getItem('jwt_token');
+      if (token) {
+        const decoded: any = jwtDecode(token);
+        return decoded.email || '';
+      }
+    }
+    return '';
   }
 
-  getIsAdmin() { 
-    const token = localStorage.getItem('jwt_token');
-    if(!token) return false;
-    const decodedToken = jwtDecode(token) as DecodedToken;
-    return decodedToken.role === 'ADMIN'; 
+  getIsAdmin(): boolean {
+    if (this.isLocalStorageAvailable()) {
+      const token = localStorage.getItem('jwt_token');
+      if (token) {
+        const decoded: any = jwtDecode(token);
+        return decoded.role === 'admin';
+      }
+    }
+    return false;
   }
 
-  getUserId() {
-    const token = localStorage.getItem('jwt_token');
-    if (!token) return null;
-    const decodedToken = jwtDecode(token) as DecodedToken;
-    return decodedToken.sub;
+  getUserId(): number {
+    if (this.isLocalStorageAvailable()) {
+      const token = localStorage.getItem('jwt_token');
+      if (token) {
+        const decoded: any = jwtDecode(token);
+        return decoded.userId || 0;
+      }
+    }
+    return 0;
   }
-  getIsTienda() {
-    const token = localStorage.getItem('jwt_token');
-    if(!token) return false;
-    const decodedToken = jwtDecode(token) as DecodedToken;
-    return decodedToken.role === 'TIENDA';
-  }
-
-  setUserAvatar(avatar: string) {
-    this.avatarUrl.next(avatar);
-  }
-  
-
 }

@@ -4,85 +4,89 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule }
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Producto } from '../interface/productos';
 import { Category } from '../interface/category';
-import { Store } from '../interface/store';
+
 
 @Component({
   selector: 'app-product-form',
   standalone: true,
-  imports: [ReactiveFormsModule, HttpClientModule, FormsModule],
+  imports: [ReactiveFormsModule, HttpClientModule],
   templateUrl: './product-form.component.html',
   styleUrl: './product-form.component.css'
 })
 export class ProductFormComponent implements OnInit {
 
-  producForm: FormGroup;
-  product: Producto | undefined;
+  producto: Producto | undefined;
+  category: Category | undefined;
+
   isUpdate: boolean = false;
   photoFile: File | undefined;
   photoPreview: string | undefined;
-  categoria: Category[] = [];
-  store: Store[] = [];
+  
+  producForm = new FormGroup({
+    id: new FormControl(''),
+    name: new FormControl(''),
+    description: new FormControl(''),
+    price: new FormControl(''),
+    photo: new FormControl(''),
+    category: new FormControl(),
+    
+  });
 
-  constructor(private httpCliente: HttpClient,
+  constructor(
+              private httpCliente: HttpClient,
               private router: Router,
               private activatedRouter: ActivatedRoute,
               private fb: FormBuilder) {
-    this.producForm = this.fb.group({
-      id: [0],
-      name: [''],
-      description: [''],
-      price: [0.0],
-      photoUrl: [''],
-      category: this.fb.group({
-        id: [0],
-        name: ['']
-      }),
-      store: this.fb.group({
-        id: [0],
-        name: [''],
-        location: ['']
-      })
-    });
+    
   }
 
   ngOnInit(): void {
+
     this.activatedRouter.params.subscribe(params => {
+
       const id = params['id'];
       if (!id) return;
 
-      // Cargar las categorías y tiendas desde el backend
-      this.httpCliente.get<Category[]>('http://localhost:8080/categorias').subscribe(categories => {
-        this.categoria = categories;
-      }, error => {
-        console.error('Error al cargar categorías', error);
+      const categoryUrl = 'http://localhost:8080/category/' + id;
+
+      // Cargar las categorías  desde el backend
+      this.httpCliente.get<Category>(categoryUrl)
+      .subscribe(category => {
+        this.category = category;
+        this.producForm.patchValue({
+          category: this.category    
+        });
       });
 
-      this.httpCliente.get<Store[]>('http://localhost:8080/tiendas').subscribe(stores => {
-        this.store = stores;
-      }, error => {
-        console.error('Error al cargar tiendas', error);
-      });
-
-      this.httpCliente.get<Producto>('http://localhost:8080/productos/' + id).subscribe(product => {
-        this.producForm.reset(product);
+    
+      this.httpCliente.get<Producto>('http://localhost:8080/productos/' + id)
+      .subscribe(producto => {
+        this.producForm.reset();
+        this.producForm.get('category')?.setValue(producto.category);
+        this.producto = producto;
         this.isUpdate = true;
-        this.product = product;
-      }, error => {
-        console.error('Error al cargar el producto', error);
+        
       });
+
     });
   }
 
   onFileChange(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files.length) {
-      this.photoFile = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => this.photoPreview = reader.result as string;
-      reader.readAsDataURL(this.photoFile);
+    let target = event.target as HTMLInputElement; // este target es el input de tipo file donde se carga el archivo
+
+    if (target.files === null || target.files.length == 0) {
+      return; // no se procesa ningún archivo
     }
+
+    this.photoFile = target.files[0]; // guardar el archivo para enviarlo luego en el save()
+
+    // OPCIONAL: PREVISUALIZAR LA IMAGEN POR PANTALLA
+    let reader = new FileReader();
+    reader.onload = event => this.photoPreview = reader.result as string;
+    reader.readAsDataURL(this.photoFile);
   }
 
+  // Crear FormData
   save() {
     const formData = new FormData();
     formData.append('id', this.producForm.get('id')?.value?.toString() ?? '0');
@@ -92,7 +96,7 @@ export class ProductFormComponent implements OnInit {
     formData.append('photo', this.photoFile ?? '');
     formData.append('category.id', this.producForm.get('category.id')?.value?.toString() ?? '0');
     formData.append('category.name', this.producForm.get('category.name')?.value ?? '');
-    formData.append('store.id', this.producForm.get('store.id')?.value?.toString() ?? '0');
+    //formData.append('store.id', this.producForm.get('store.id')?.value?.toString() ?? '0');
     formData.append('store.name', this.producForm.get('store.name')?.value ?? '');
     formData.append('store.location', this.producForm.get('store.location')?.value ?? '');
 
@@ -101,7 +105,7 @@ export class ProductFormComponent implements OnInit {
     }
 
     if (this.isUpdate) {
-      const url = 'http://localhost:8080/productos/' + this.product?.id;
+      const url = 'http://localhost:8080/productos/' + this.producto?.id;
       this.httpCliente.put<Producto>(url, formData).subscribe(producBacken => {
         this.router.navigate(['/productos', producBacken, 'detail']);
       });

@@ -1,7 +1,4 @@
 import { Category } from "./category";
-import { Store } from "./store";
-
-// Definimos la interfaz
 export interface Producto{
    
     id: number;
@@ -18,7 +15,6 @@ export interface Producto{
 
     category: Category;
 
-    store: Store;
 }
 
 
