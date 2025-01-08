@@ -21,7 +21,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false)
-    private  String firtsName;
+    private  String firstName;
 
     @Column(nullable = false)
     private  String lastName;
@@ -36,7 +36,7 @@ public class User {
    @Enumerated(EnumType.STRING)
     private RolName rolName;
 
-   private String PhotoUrl;
+   private String imgUser;
 
 
 }

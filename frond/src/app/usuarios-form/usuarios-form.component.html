@@ -1,12 +1,12 @@
 <body>
   <div class="wrapper">
       <div class="banner">
-        <form action="" class="form" [formGroup]="userForm" (ngSubmit)="save()">
+        <form class="form" [formGroup]="userForm" (ngSubmit)="save()">
 
           <h1 class="inp title">Registrate</h1>
           <!-- formulario de registro-->
           <div class="inp">
-            <input type="text" class="input" placeholder="Nombre" formControlName="firstName">
+            <input type="text" class="input" id="firstName" placeholder="Nombre" formControlName="firstName">
             @if (userForm.controls.firstName.touched && userForm.controls.firstName.errors) {
               <div>
                 <small class="text-danger">Introduce un Nombre</small>

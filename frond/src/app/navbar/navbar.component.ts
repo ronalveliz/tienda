@@ -17,7 +17,7 @@ export class NavbarComponent {
   public carritoService = inject(CarritoService);
 
   title = 'frontend';
-  isLoggedIn = false;
+  isLoggedin = false;
   userEmail = '';
   isAdmin = false;
 
@@ -25,7 +25,7 @@ export class NavbarComponent {
     private authService: AuthenticationService,
     private router: Router
     ) {
-    this.authService.isLoggedIn.subscribe(isLoggedIn => this.isLoggedIn = isLoggedIn);
+    this.authService.isLoggedin.subscribe(isLoggedin => this.isLoggedin = isLoggedin);
     this.authService.userEmail.subscribe(userEmail => this.userEmail = userEmail);
     this.authService.isAdmin.subscribe(isAdmin => this.isAdmin = isAdmin);
   }

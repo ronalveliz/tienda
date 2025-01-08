@@ -18,6 +18,7 @@ export class AccountFormComponent implements OnInit {
   user: User | undefined;
   
   isAdmin = false;
+
   userForm = new FormGroup({
     firstName: new FormControl(),
     lastName: new FormControl(),
@@ -25,6 +26,7 @@ export class AccountFormComponent implements OnInit {
     phone: new FormControl(),
     PhotoUrl: new FormControl()
   });
+  
   photoFile: File | undefined;
   photoPreview: string | undefined;
 

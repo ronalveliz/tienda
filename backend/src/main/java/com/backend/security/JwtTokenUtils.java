@@ -31,7 +31,7 @@ public class JwtTokenUtils {
 
         User user = getCurrentUser().get();
 
-        return user.getRolName().equals(RolName.ROL_ADMIN);
+        return user.getRolName().equals(RolName.ADMIN);
 
     }
 }

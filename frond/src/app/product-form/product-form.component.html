@@ -6,9 +6,9 @@
         <h2 class="my-5">Previsualización foto</h2>
         <img class="img-fluid" [src]="photoPreview">
       }
-      @if (!photoPreview && product?.photoUrl) {
+      @if (!photoPreview && producto?.photoUrl) {
         <h2 class="my-5">Previsualización foto</h2>
-        <img class="img-fluid" [src]="'http://localhost:8080/files/' + product?.photoUrl">
+        <img class="img-fluid" [src]="'http://localhost:8080/files/' + producto?.photoUrl">
       }
                                        
     </div>
@@ -21,25 +21,19 @@
       }
       
       <form [formGroup]="producForm" (ngSubmit)="save()">
+        
         <input type="hidden" formControlName="id">
 
         <div class="form-floating mb-3">
-          <select class="form-control" [(ngModel)]="product" formControlName="category" >
-            @for ( cate of categoria; track cate.name  ) {
-              <option [ngValue]="cate.name">{{ cate.name }}</option>
+          <select class="form-control" id="category" formControlName="category" >
+            @if (category) {
+              <option [ngValue]="category">{{category.name}}</option>
+              <label for="restaurant">Categoria Asociada</label>
             }
           </select>
-          <label for="category">Categoría</label>
+
         </div>
       
-        <div class="form-floating mb-3">
-          @if (store) {
-            <select  id="store"  class="form-control"  formGroupName="store">
-              <option [ngValue]="1">{{store}}</option>
-            </select>
-          }
-          <label for="store">Tienda</label>
-        </div>
 
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="name" formControlName="name">

@@ -1,11 +1,12 @@
 
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
-import { Login } from '../interface/login';
-import { Token } from '../interface/token';
+import { Router, RouterLink } from '@angular/router';
+
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../authentication/authentication.service';
+import { Login } from '../dto/login';
+import { Token } from '../dto/token';
 
 @Component({
   selector: 'app-login',
@@ -21,8 +22,8 @@ export class LoginComponent {
         email: [''],
         password: ['']
       });
-    
-      constructor(private fb: FormBuilder, 
+
+      constructor(private fb: FormBuilder,
         private httpClient: HttpClient,
         private authService: AuthenticationService,
         private router: Router) {}
@@ -31,12 +32,12 @@ export class LoginComponent {
             email: this.loginForm.get('email')?.value ?? '',
             password: this.loginForm.get('password')?.value ?? '',
           };
-        
+
           this.httpClient.post<Token>('http://localhost:8080/users/login', login).subscribe({
             next: (response) => {
               console.log(response.token);
               this.authService.saveToken(response.token);
-              this.router.navigate(['/productos']);
+              this.router.navigate(['/home']);
             },
             error: (err) => {
               if (err.status === 403) {

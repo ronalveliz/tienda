@@ -3,9 +3,9 @@
       <div class="container">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <a href="https://linetechperu.com/" class="d-flex align-items-center my-1 my-lg-0 me-lg-auto text-white text-decoration-none">
-            <img src="assets/img/sin letras pero png.png" alt="logo" style="width: 100px ;">     
+            <img src="assets/img/sin letras pero png.png" alt="logo" style="width: 100px ;">
           </a>
-  
+
           <ul class="nav col-12 col-lg-auto my-2 justify-content-center my-md-0 text-small">
             <li>
               <a href="#" class="nav-link text-secondary">
@@ -39,14 +39,14 @@
                 </a>
               </li>
             }
-            @if (isLoggedIn) {
+            @if (isLoggedin) {
               <li>
                 <a href="#" class="nav-link text-secondary" (click)="logout()">
                   <i class="bi bi-person-bounding-box"></i>
                   logout
                 </a>
-              </li>  
-            }@else {  
+              </li>
+            }@else {
               <li>
                 <a href="#" class="nav-link text-secondary" routerLink="register">
                   <i class="bi bi-person-bounding-box"></i>

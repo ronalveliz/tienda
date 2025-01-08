@@ -4,6 +4,7 @@ import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule }
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Producto } from '../interface/productos';
 import { Category } from '../interface/category';
+import { AuthenticationService } from '../authentication/authentication.service';
 
 
 @Component({
@@ -21,7 +22,9 @@ export class ProductFormComponent implements OnInit {
   isUpdate: boolean = false;
   photoFile: File | undefined;
   photoPreview: string | undefined;
-  
+  isAdmin = false;
+  isLoggedin = false;
+
   producForm = new FormGroup({
     id: new FormControl(''),
     name: new FormControl(''),
@@ -29,18 +32,23 @@ export class ProductFormComponent implements OnInit {
     price: new FormControl(''),
     photo: new FormControl(''),
     category: new FormControl(),
-    
+
   });
 
   constructor(
               private httpCliente: HttpClient,
               private router: Router,
               private activatedRouter: ActivatedRoute,
-              private fb: FormBuilder) {
-    
-  }
+              private fb: FormBuilder, private authService: AuthenticationService){
+                this.authService.isAdmin.subscribe(isAdmin => this.isAdmin = isAdmin);
+                this.authService.isLoggedin.subscribe(isLoggedin => this.isLoggedin = isLoggedin);
+              }
+
+
 
   ngOnInit(): void {
+
+    // Cargar las categorías desde el backend
 
     this.activatedRouter.params.subscribe(params => {
 
@@ -54,18 +62,18 @@ export class ProductFormComponent implements OnInit {
       .subscribe(category => {
         this.category = category;
         this.producForm.patchValue({
-          category: this.category    
+          category: this.category
         });
       });
 
-    
+
       this.httpCliente.get<Producto>('http://localhost:8080/productos/' + id)
       .subscribe(producto => {
         this.producForm.reset();
         this.producForm.get('category')?.setValue(producto.category);
         this.producto = producto;
         this.isUpdate = true;
-        
+
       });
 
     });

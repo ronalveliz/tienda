@@ -1,6 +1,6 @@
 package com.backend.dto;
 
-public record LoguinUsuario(
+public record LoginUsuario(
         String email,
         String password)
 {
