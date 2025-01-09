@@ -24,4 +24,10 @@ public class Store {
 
     private String location;
 
+    private String ImageUrl;
+
+    @ManyToOne()
+    @JoinColumn(name = "user_id")
+    private User user;
+
 }

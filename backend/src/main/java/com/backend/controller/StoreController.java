@@ -1,13 +1,26 @@
 package com.backend.controller;
 
+import com.backend.exception.UnauthorizedException;
+import com.backend.model.RolName;
 import com.backend.model.Store;
+import com.backend.model.User;
 import com.backend.repository.StoreRepository;
+import com.backend.security.JwtTokenUtils;
+import com.backend.service.FileService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Example;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @CrossOrigin("*")
@@ -15,51 +28,117 @@ import java.util.Optional;
 @RestController
 @AllArgsConstructor
 public class StoreController {
-    private final StoreRepository repo;
+    private final StoreRepository storeRepository;
+    private FileService fileService;
 
-    // Obtener todas las tiendas
-    @GetMapping("store")
-    private List<Store> findAll(){
-        return repo.findAll();
+    @GetMapping("/my-tienda")
+    public ResponseEntity<List<Store>> getMyRestaurants() {
+        User currentUser = JwtTokenUtils.getCurrentUser().orElseThrow(() -> new RuntimeException("No autenticado"));
+        List<Store> myRestaurants = storeRepository.findByUser_Id(currentUser.getId());
+        return ResponseEntity.ok(myRestaurants);
     }
 
-    // Obtener una tienda por ID
-    @GetMapping("store/{id}")
-    public ResponseEntity<Store> getById(@PathVariable Long id) {
-        Optional<Store> store = repo.findById(id);
-        if (store.isPresent()) {
-            return ResponseEntity.ok(store.get());
+    @GetMapping("tienda/edit/{id}")
+    public ResponseEntity<Boolean> canEditRestaurant(@PathVariable Long id) {
+        User currentUser = JwtTokenUtils.getCurrentUser().orElseThrow(() -> new RuntimeException("No autenticado"));
+        boolean canEdit = storeRepository.existsByUser_IdAndId(currentUser.getId(), id);
+
+        if(currentUser.getRolName() == RolName.ADMIN || canEdit)
+            return ResponseEntity.ok(true);
+        else
+            return ResponseEntity.status(HttpStatusCode.valueOf(403)).build();
+    }
+
+    /*@GetMapping("tienda-list")
+    public List<Store> findByIdAll(@PathVariable Store store) {
+        return storeRepository.findAll(store);
+    }*/
+
+    @GetMapping("/tienda")
+    public ResponseEntity<List<Store>> findAll(@RequestParam(required = false) String name) {
+        List<Store> stores;
+        if (name != null && !name.isEmpty()) {
+            stores = storeRepository.findByNameContainingIgnoreCase(name);
         } else {
-            return ResponseEntity.notFound().build();
+            stores = storeRepository.findAll();
+            // restaurants = repository.findAllByActiveTrue();
         }
+        SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return ResponseEntity.ok(stores);
     }
 
-    // Crear una nueva tienda
-    @PostMapping("store")
-    public ResponseEntity<Store> create(@RequestBody Store store) {
-        Store savedStore = repo.save(store);
-        return ResponseEntity.ok(savedStore);
+    @GetMapping("/tienda/{id}")
+    public ResponseEntity<Store> findById(@PathVariable  Long id) {
+        return storeRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
-    // Actualizar una tienda existente
-    @PutMapping("store/{id}")
-    public ResponseEntity<Store> update(@RequestBody Store store, @PathVariable Long id) {
-        if (!repo.existsById(id)) {
-            return ResponseEntity.notFound().build();
+    @PostMapping("/tienda")
+    public Store create(@RequestParam(value = "photo", required = false) MultipartFile file,
+                             @RequestParam MultiValueMap<String, String> formData) {
+        LocalTime openingTime = LocalTime.parse(Objects.requireNonNull(formData.getFirst("openingTime")));
+        LocalTime closingTime = LocalTime.parse(Objects.requireNonNull(formData.getFirst("closingTime")));
+        Store stores = new Store();
+        stores.setName(formData.getFirst("name"));
+        stores.setLocation(formData.getFirst("location"));
+        //stores.setPhone(formData.getFirst("phone"));
+
+
+        if (file != null && !file.isEmpty()) {
+            String fileName = fileService.store(file);
+            stores.setImageUrl(fileName);
         }
-        store.setId(id); // Asegurar que el ID de la tienda se actualiza correctamente
-        Store updatedStore = repo.save(store);
-        return ResponseEntity.ok(updatedStore);
+        return this.storeRepository.save(stores);
     }
 
-    // Eliminar una tienda por ID
-    @DeleteMapping("store/{id}")
+
+
+    @PutMapping("/tineda/{id}")
+    public Store updateRestaurant(@PathVariable Long id,
+                                       @RequestParam(value = "photo", required = false) MultipartFile file,
+                                       @RequestParam MultiValueMap<String, String> formData) {
+
+        User currentUser = JwtTokenUtils.getCurrentUser().orElseThrow(() -> new RuntimeException("No autenticado"));
+        boolean canEdit = storeRepository.existsByUser_IdAndId(currentUser.getId(), id);
+        if (!(currentUser.getRolName() == RolName.ADMIN || canEdit)) {
+            throw new UnauthorizedException("No puede editar");
+        }
+
+        // Busca el restaurante existente por ID en lugar de crear uno nuevo
+        Store store = storeRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Restaurante no encontrado con id: " + id));
+
+        // Actualiza los campos del restaurante existente
+        store.setName(formData.getFirst("name"));
+        store.setLocation(formData.getFirst("city"));
+        store.setImageUrl(formData.getFirst("ImageUrl"));
+
+        if (file != null && !file.isEmpty()) {
+            String fileName = fileService.store(file);
+            store.setImageUrl(fileName);
+        }
+
+        // Guarda y devuelve el restaurante actualizado
+        return storeRepository.save(store);
+    }
+
+
+
+    @DeleteMapping("/tienda/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        if (repo.existsById(id)) {
-            repo.deleteById(id);
+        if (storeRepository.existsById(id)) {
+            storeRepository.deleteById(id);
             return ResponseEntity.ok().build();
-        } else {
-            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.notFound().build();
+    }
+    @PostMapping("/restaurant/filter")
+    public ResponseEntity<List<Store>> findAllFiltering(@RequestBody Store store) {
+        Example<Store> filter = Example.of(store);
+        List<Store> restaurants = storeRepository.findAll(filter);
+        if (restaurants.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(restaurants);
     }
 }

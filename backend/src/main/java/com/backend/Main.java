@@ -29,14 +29,13 @@ public class Main {
         CategoryRepository repoCatego= context.getBean(CategoryRepository.class);
 
 
-                // borrado de tablas
+            // borrado de tablas
             repoShopList.deleteAll();
             repoOrderss.deleteAll();
             repoProducto.deleteAll();
             userRepo.deleteAll();
             repoStore.deleteAll();
             repoCatego.deleteAll();
-
 
 
             // Crear y guardar usuarios
@@ -48,9 +47,9 @@ public class Main {
             userRepo.saveAll(List.of(a0, u1, u2, u3));
 
             // Crear y guardar tiendas
-            Store store1 = new Store(null, "Tienda A", "Calle Principal 123");
-            Store store2 = new Store(null, "Tienda B", "Avenida Secundaria 456");
-            Store store3 = new Store(null, "Tienda C", "Plaza Central 789");
+            Store store1 = new Store(null, "Tienda A", "Calle Principal 123","https://media.tacdn.com/media/attractions-splice-spp-674x446/0d/ac/68/23.jpg", u3);
+            Store store2 = new Store(null, "Tienda B", "Avenida Secundaria 456","https://media.tacdn.com/media/attractions-splice-spp-674x446/0d/ac/68/23.jpg", u3);
+            Store store3 = new Store(null, "Tienda C", "Plaza Central 789","https://media.tacdn.com/media/attractions-splice-spp-674x446/0d/ac/68/23.jpg", u3);
             repoStore.saveAll(List.of(store1, store2, store3));
 
             // crear category y guarda

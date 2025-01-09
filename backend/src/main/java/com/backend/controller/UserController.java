@@ -74,7 +74,7 @@ public class UserController {
         long nextWeekMillis = TimeUnit.DAYS.toMillis(7);
         Date expirationDate = new Date(issuedDate.getTime() + nextWeekMillis);
 
-        byte[] key = Base64.getDecoder().decode("wLd39ypA5uOeydsszUh3f6OXijomn+VVIpFlaDkF86w=");
+        byte[] key = Base64.getDecoder().decode("4QYC9CxV/6e9RKQDPLGx7eZLLIfTS3natiKdCU8mw8I");
 
         String token = Jwts.builder()
                 // id del usuario
@@ -126,7 +126,7 @@ public class UserController {
 
         if (file != null && !file.isEmpty()) {
             String fileName = fileService.store(file);
-            user.setPhotoUrl(fileName);
+            user.setImgUser(fileName);
             this.repo.save(user);
         }
 
@@ -135,13 +135,21 @@ public class UserController {
     // subir avatar
     @PutMapping ("user/{id}")
     private ResponseEntity<User> update(@RequestBody User user, @PathVariable Long id){
-
+        Optional<User> userOtp = repo.findById(id);
         if (user.getId() == null){
             return ResponseEntity.badRequest().build();
         }
-        User saveList = repo.save(user);
-        return ResponseEntity.ok(saveList);
+        User usuariosFromDB = userOtp.get();
+        // faltan mas atributos
+        return ResponseEntity.ok(repo.save(usuariosFromDB));
     }
 
+
+    @DeleteMapping("user/id")
+    private ResponseEntity<Void> deleteById(@PathVariable Long id){
+
+        repo.deleteById(id);
+        return ResponseEntity.noContent().build(); //204
+    }
 
 }

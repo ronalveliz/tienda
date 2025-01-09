@@ -33,43 +33,52 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // 1. Extraer de la cabecera Authorization de la request
+        log.info("Ejecutando");
+
+
+        //extraer el token de la cabecera Authorization de la request
+
         String bearerToken = request.getHeader("Authorization");
-        if (!StringUtils.hasLength(bearerToken) || !bearerToken.startsWith("Bearer")) {
+        String token = "";
+
+        if (StringUtils.hasLength(bearerToken) && bearerToken.startsWith("Bearer")){
+
+            token = bearerToken.substring("Bearer ".length());
+        } else {
             filterChain.doFilter(request, response);
             return;
         }
-        String token = bearerToken.substring("Bearer ".length());
 
-        // 2. Verificar el token JWT
-        Optional<User> userOptional = validateTokenAndExtractUser(token);
-        if (userOptional.isEmpty()) {
+        log.info("Extraido token JWT {}", token);
+
+        // verificar el token
+
+        byte[] key = Base64.getDecoder().decode("wLd39ypA5uOeydsszUh3f6OXijomn+VVIpFlaDkF86w=");
+
+        String userId = Jwts.parser().verifyWith(Keys.hmacShaKeyFor(key)).build().parseSignedClaims(token).getPayload().getSubject();
+
+        log.info(userId);
+
+        // obtener el usuario cuyo id hemos extraido del jwt
+
+        Optional<User> userOptional = this.userRepository.findById(Long.valueOf(userId));
+
+        if (userOptional.isEmpty()){
+            log.warn("Usuario con Id no encontrado", userId);
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
-        // 3. Cargar usuario en contexto de seguridad Spring
+        // Crear objeto autenticacion con datos del usuario y guardarlo en el contexto de seguridad de spring Security
+
         User user = userOptional.get();
         SimpleGrantedAuthority role = new SimpleGrantedAuthority(user.getRolName().toString());
-        Authentication auth = new UsernamePasswordAuthenticationToken(user, null, List.of(role));
+        UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user,null, List.of(role));
         SecurityContextHolder.getContext().setAuthentication(auth);
-        filterChain.doFilter(request, response);
-    }
+
+        //Dejar pasar la peticion
 
 
-    private Optional<User> validateTokenAndExtractUser(String token) {
-        byte[] key = Base64.getDecoder().decode("FZD5maIaX04mYCwsgckoBh1NJp6T3t62h2MVyEtdo3w=");
-        try {
-            String userId = Jwts.parser()
-                    .verifyWith(Keys.hmacShaKeyFor(key))
-                    .build()
-                    .parseSignedClaims(token)
-                    .getPayload()
-                    .getSubject();
-            return this.userRepository.findById(Long.valueOf(userId));
-        } catch (JwtException e) {
-            log.error("Error en la validación del token JWT");
-            return Optional.empty();
-        }
+        filterChain.doFilter(request,response);
     }
 }

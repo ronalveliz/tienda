@@ -1,13 +1,14 @@
 package com.backend.controller;
 
-import com.backend.model.Category;
 import com.backend.model.Productos;
-import com.backend.repository.CategoryRepository;
+import com.backend.model.RolName;
+import com.backend.model.User;
 import com.backend.repository.ProductoRepository;
+import com.backend.security.JwtTokenUtils;
 import com.backend.service.FileService;
 import lombok.AllArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,8 +25,30 @@ public class ProductosController {
 
 
     private ProductoRepository productoRepository;
-    private CategoryRepository categoryRepository;
     private FileService fileService;
+
+    @GetMapping("/productos/can-edit/{productosId}")
+    public ResponseEntity<Boolean> canEditProductos (@PathVariable Long productosId) {
+        User currentUser = JwtTokenUtils.getCurrentUser().orElseThrow(() -> new RuntimeException("No autenticado"));
+        boolean canEdit = productoRepository.existsByIdAndCategoryUserId(productosId, currentUser.getId());
+
+        if(currentUser.getRolName() == RolName.ADMIN || canEdit) {
+            return ResponseEntity.ok(true);
+        } else {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
+    }
+
+
+    @GetMapping("/productos/byproductos/{categoryid}")
+    public ResponseEntity<List<Productos>> findByCategoryId(@PathVariable Long categoryid) {
+        List<Productos> menus = productoRepository.findByCategory_Id(categoryid);
+        if (menus.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(menus);
+    }
+
 
     @GetMapping("productos")
     public List<Productos> findAll() {
@@ -44,24 +67,14 @@ public class ProductosController {
         }
     }
 
+
     @PostMapping("/productos")
     public Productos create(@RequestParam(value = "photo", required = false) MultipartFile file, @RequestBody Productos productos) {
-        // Verificar si la categoría existe
-        Optional<Category> existingCategory = categoryRepository.findByName(productos.getCategory().getName());
 
-        if (existingCategory.isPresent()) {
-            // Si la categoría existe, usarla
-            productos.setCategory(existingCategory.get());
-        } else {
-            // Si la categoría no existe, crearla
-            Category newCategory = categoryRepository.save(productos.getCategory());
-            productos.setCategory(newCategory);
-        }
-
-        // Manejar la foto del producto
-        if (file != null) {
+        if (file != null){
             String fileName = fileService.store(file);
             productos.setPhotoUrl(fileName);
+
         } else {
             productos.setPhotoUrl("avatar.png");
         }
@@ -70,31 +83,18 @@ public class ProductosController {
     }
 
     @PutMapping("/productos/{id}")
-    public ResponseEntity<Productos> updateProduct(
+    public ResponseEntity<Productos> update(
             @PathVariable Long id,
-            @RequestBody Productos productos,
-            @RequestParam(value = "photo", required = false) MultipartFile file) {
-        if (!this.productoRepository.existsById(id))
+            Productos productos,
+            @RequestParam(value = "photo", required = false) MultipartFile file
+    ){
+        if(!this.productoRepository.existsById(id))
             return ResponseEntity.notFound().build();
 
-        // Verificar si la categoría existe
-        Optional<Category> existingCategory = categoryRepository.findByName(productos.getCategory().getName());
-
-        if (existingCategory.isPresent()) {
-            // Si la categoría existe, usarla
-            productos.setCategory(existingCategory.get());
-        } else {
-            // Si la categoría no existe, crearla
-            Category newCategory = categoryRepository.save(productos.getCategory());
-            productos.setCategory(newCategory);
-        }
-
-        // Manejar la foto del producto
-        if (file != null && !file.isEmpty()) {
+        if(file != null && !file.isEmpty()) {
             String fileName = fileService.store(file);
             productos.setPhotoUrl(fileName);
         }
-
         return ResponseEntity.ok(this.productoRepository.save(productos));
     }
 
@@ -107,41 +107,3 @@ public class ProductosController {
         return ResponseEntity.notFound().build();
     }
 }
-    /*// Nuevo endpoint de búsqueda por categoría
-    @GetMapping("productos/categoria/{categoria}")
-    public ResponseEntity<List<Productos>> findByCategory_Id(@PathVariable("categoria") Long categoria) {
-        List<Productos> productos = productoRepository.findByCategory_Id(categoria);
-        if (productos.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(productos);
-    }*/
-
-   /* @PostMapping("productos")
-    public Productos create(@RequestParam(value = "photo", required = false) MultipartFile file, Productos productos) {
-        if (file != null) {
-            String fileName = fileService.store(file);
-            productos.setPhotoUrl(fileName);
-        } else {
-            productos.setPhotoUrl("avatar.png");
-        }
-        return this.productoRepository.save(productos);
-    }
-
-    @PutMapping("productos/{id}")
-    public ResponseEntity<?> updateProduct(
-            @PathVariable Long id,
-            Productos productos,
-            @RequestParam(value = "photo", required = false) MultipartFile file) {
-        if (!this.productoRepository.existsById(id))
-            return ResponseEntity.notFound().build();
-
-        if (file != null && !file.isEmpty()) {
-            String fileName = fileService.store(file);
-            productos.setPhotoUrl(fileName);
-        }
-        return ResponseEntity.ok(this.productoRepository.save(productos));
-    }*/
-
-
-
