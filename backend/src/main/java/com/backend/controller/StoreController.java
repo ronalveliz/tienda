@@ -18,10 +18,10 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalTime;
+
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+
+
 
 @CrossOrigin("*")
 @Slf4j
@@ -34,14 +34,14 @@ public class StoreController {
     @GetMapping("/my-tienda")
     public ResponseEntity<List<Store>> getMyRestaurants() {
         User currentUser = JwtTokenUtils.getCurrentUser().orElseThrow(() -> new RuntimeException("No autenticado"));
-        List<Store> myRestaurants = storeRepository.findByUser_Id(currentUser.getId());
+        List<Store> myRestaurants = storeRepository.findByOwnerId(currentUser.getId());
         return ResponseEntity.ok(myRestaurants);
     }
 
     @GetMapping("tienda/edit/{id}")
     public ResponseEntity<Boolean> canEditRestaurant(@PathVariable Long id) {
         User currentUser = JwtTokenUtils.getCurrentUser().orElseThrow(() -> new RuntimeException("No autenticado"));
-        boolean canEdit = storeRepository.existsByUser_IdAndId(currentUser.getId(), id);
+        boolean canEdit = storeRepository.existsByOwner_IdAndId(currentUser.getId(), id);
 
         if(currentUser.getRolName() == RolName.ADMIN || canEdit)
             return ResponseEntity.ok(true);
@@ -49,10 +49,6 @@ public class StoreController {
             return ResponseEntity.status(HttpStatusCode.valueOf(403)).build();
     }
 
-    /*@GetMapping("tienda-list")
-    public List<Store> findByIdAll(@PathVariable Store store) {
-        return storeRepository.findAll(store);
-    }*/
 
     @GetMapping("/tienda")
     public ResponseEntity<List<Store>> findAll(@RequestParam(required = false) String name) {
@@ -61,7 +57,6 @@ public class StoreController {
             stores = storeRepository.findByNameContainingIgnoreCase(name);
         } else {
             stores = storeRepository.findAll();
-            // restaurants = repository.findAllByActiveTrue();
         }
         SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return ResponseEntity.ok(stores);
@@ -77,8 +72,6 @@ public class StoreController {
     @PostMapping("/tienda")
     public Store create(@RequestParam(value = "photo", required = false) MultipartFile file,
                              @RequestParam MultiValueMap<String, String> formData) {
-        LocalTime openingTime = LocalTime.parse(Objects.requireNonNull(formData.getFirst("openingTime")));
-        LocalTime closingTime = LocalTime.parse(Objects.requireNonNull(formData.getFirst("closingTime")));
         Store stores = new Store();
         stores.setName(formData.getFirst("name"));
         stores.setLocation(formData.getFirst("location"));
@@ -100,7 +93,7 @@ public class StoreController {
                                        @RequestParam MultiValueMap<String, String> formData) {
 
         User currentUser = JwtTokenUtils.getCurrentUser().orElseThrow(() -> new RuntimeException("No autenticado"));
-        boolean canEdit = storeRepository.existsByUser_IdAndId(currentUser.getId(), id);
+        boolean canEdit = storeRepository.existsByOwner_IdAndId(currentUser.getId(), id);
         if (!(currentUser.getRolName() == RolName.ADMIN || canEdit)) {
             throw new UnauthorizedException("No puede editar");
         }
