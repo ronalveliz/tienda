@@ -36,10 +36,8 @@ public class Productos {
     private Boolean descuento;
 
     @ManyToOne
-    @JoinColumn(name = "categoria_id")
+    @JoinColumn(name = "categoria_id",referencedColumnName = "id")
     private Category category;
 
-    @ManyToOne
-    @JoinColumn(name = "store_id")
-    private Store store;
+
 }
