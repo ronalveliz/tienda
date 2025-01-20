@@ -7,6 +7,7 @@ import { Category } from '../interface/category';
 import { AuthenticationService } from '../authentication/authentication.service';
 
 
+
 @Component({
   selector: 'app-product-form',
   standalone: true,
@@ -22,15 +23,20 @@ export class ProductFormComponent implements OnInit {
   isUpdate: boolean = false;
   photoFile: File | undefined;
   photoPreview: string | undefined;
+
+  authService : AuthenticationService | undefined;
+  userId: string | null = null;
+  isTienda = false;
   isAdmin = false;
   isLoggedin = false;
 
   producForm = new FormGroup({
-    id: new FormControl(''),
-    name: new FormControl(''),
-    description: new FormControl(''),
-    price: new FormControl(''),
-    photo: new FormControl(''),
+    id: new FormControl<number>(0),
+    name: new FormControl<string>(''),
+    description: new FormControl<string>(''),
+    price: new FormControl<string>(''),
+    photoUrl: new FormControl<string>(''),
+    descuento: new FormControl<boolean>(false),
     category: new FormControl(),
 
   });
@@ -39,10 +45,16 @@ export class ProductFormComponent implements OnInit {
               private httpCliente: HttpClient,
               private router: Router,
               private activatedRouter: ActivatedRoute,
-              private fb: FormBuilder, private authService: AuthenticationService){
-                this.authService.isAdmin.subscribe(isAdmin => this.isAdmin = isAdmin);
-                this.authService.isLoggedin.subscribe(isLoggedin => this.isLoggedin = isLoggedin);
-              }
+              private fb: FormBuilder,
+              authService: AuthenticationService){
+                this.authService = authService;
+      if (this.authService) {
+        this.authService.isLoggedin.subscribe(isLoggedin => this.isLoggedin = isLoggedin);
+        this.authService.isAdmin.subscribe(isAdmin => this.isAdmin = isAdmin);
+        this.authService.isTienda.subscribe(isTienda => this.isTienda = isTienda);
+        this.authService.userId.subscribe(userId => this.userId = userId);
+      }
+    }
 
 
 
@@ -96,17 +108,24 @@ export class ProductFormComponent implements OnInit {
 
   // Crear FormData
   save() {
+    if(!this.category) return;
+
+    const formValue = this.producForm.value;
+    const productos: Producto = {
+      ...formValue,
+      price: Number(formValue.price)
+    } as Producto;
+    productos.category = this.category;
+
     const formData = new FormData();
     formData.append('id', this.producForm.get('id')?.value?.toString() ?? '0');
     formData.append('name', this.producForm.get('name')?.value ?? '');
     formData.append('description', this.producForm.get('description')?.value ?? '');
     formData.append('price', this.producForm.get('price')?.value?.toString() ?? '');
-    formData.append('photo', this.photoFile ?? '');
-    formData.append('category.id', this.producForm.get('category.id')?.value?.toString() ?? '0');
-    formData.append('category.name', this.producForm.get('category.name')?.value ?? '');
-    //formData.append('store.id', this.producForm.get('store.id')?.value?.toString() ?? '0');
-    formData.append('store.name', this.producForm.get('store.name')?.value ?? '');
-    formData.append('store.location', this.producForm.get('store.location')?.value ?? '');
+    formData.append('photoUrl', this.producForm.get('photoUrl')?.value ?? '');
+    formData.append('descuento', this.producForm.get('descuento')?.value?.toString() ?? 'false');
+    formData.append('category', this.producForm.get('category')?.value?.toString() ?? '0');
+
 
     if (this.photoFile) {
       formData.append("photo", this.photoFile);
@@ -114,6 +133,7 @@ export class ProductFormComponent implements OnInit {
 
     if (this.isUpdate) {
       const url = 'http://localhost:8080/productos/' + this.producto?.id;
+
       this.httpCliente.put<Producto>(url, formData).subscribe(producBacken => {
         this.router.navigate(['/productos', producBacken, 'detail']);
       });

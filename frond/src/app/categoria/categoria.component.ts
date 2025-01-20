@@ -16,7 +16,10 @@ import { Producto } from '../interface/productos';
 export class CategoriaComponent implements OnInit {
 
   categoria: Category | undefined;
+  tienda: Storage | undefined;
+
   isUpdate: boolean = false;
+
   photoFile: File | undefined;
   photoPreview: string | undefined;
   isAdmin = false;
@@ -27,44 +30,48 @@ export class CategoriaComponent implements OnInit {
     name: new FormControl<string>('')
   });
 
-  
 
-  constructor( 
+
+  constructor(
     private httpClient: HttpClient,
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private authService: AuthenticationService
-  )
-    {
-      this.authService.isAdmin.subscribe(isAdmin => this.isAdmin = isAdmin);
-      this.authService.isLoggedIn.subscribe(isLoggedIn => this.isLoggedin = isLoggedIn)
-    }
+  ){}
+
 
     ngOnInit(): void {
+
       this.activatedRoute.params.subscribe(params =>{
         const id = params['id'];
-        if(id){
-          this.isUpdate = true;
-          this.loadCategory(id);
-        } else{
-          this.isUpdate = false;
+        if (!id){
+          return;
         }
-      });
+        const tiendaUrl = 'http://localhost:8080/tiendas/' + id;
+        this.httpClient.get<Storage>(tiendaUrl)
+        .subscribe(tienda => {
+          this.tienda = tienda;
+          this.categoryform.patchValue({
+            tienda: this.tienda
+          });
+        });
+
+        this.httpClient.get<Category>('http://localhost:8080/category/' + id).subscribe(category =>{
+          this.categoryform.reset(category);
+          this.categoryform.get('Tienda')?.setValue(category.tienda);
+
+      } );
+
     }
-    
-    
-    
-    loadCategory( id: string) :void{
-      this.httpClient.get<Producto>(`http://localhost:8080/productos/${id}`)
-      .subscribe(producto =>{
-        this.categoryform.patchValue(producto);
-      });
-    }
+
+
+
+
 
     save(){
       const formData = new FormData();
       formData.append('name', this.categoryform.get('name')?.value ?? '');
-    
+
       const id = this.categoryform.get('id')?.value;
       if (id && this.isUpdate){
         this.httpClient.put<Category>(`http://localhost:8080/productos/${id}`, formData)
@@ -79,9 +86,9 @@ export class CategoriaComponent implements OnInit {
       }
     }
 
-   
-    
-    
+
+
+
 }
 
 
