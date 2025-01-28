@@ -1,3 +1,4 @@
+@if(isLoggedin){
 
 <div class="container">
   <div class="row">
@@ -10,7 +11,7 @@
         <h2 class="my-5">Previsualización foto</h2>
         <img class="img-fluid" [src]="'http://localhost:8080/files/' + producto?.photoUrl">
       }
-                                       
+
     </div>
     <div class="">
 
@@ -19,9 +20,9 @@
       }@else {
         <h1 class="mt-5 mb-5">Crear Un Producto</h1>
       }
-      
+
       <form [formGroup]="producForm" (ngSubmit)="save()">
-        
+
         <input type="hidden" formControlName="id">
 
         <div class="form-floating mb-3">
@@ -33,7 +34,7 @@
           </select>
 
         </div>
-      
+
 
         <div class="form-floating mb-3">
           <input type="text" class="form-control" id="name" formControlName="name">
@@ -58,9 +59,12 @@
           <button class="btn btn-success"  type="submit">Actualizar</button>
         } @else {
           <button class="btn btn-success" type="submit">Crear</button>
-        } 
+        }
       </form>
     </div>
   </div>
 </div>
-    
+
+} @else {
+  <h1 class="text-center mt-5">Debes estar logueado para acceder a esta página</h1>
+}

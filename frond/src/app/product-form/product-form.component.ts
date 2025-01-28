@@ -6,8 +6,6 @@ import { Producto } from '../interface/productos';
 import { Category } from '../interface/category';
 import { AuthenticationService } from '../authentication/authentication.service';
 
-
-
 @Component({
   selector: 'app-product-form',
   standalone: true,

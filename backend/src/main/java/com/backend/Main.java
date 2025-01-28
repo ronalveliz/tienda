@@ -11,8 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 
-import static io.jsonwebtoken.security.Keys.password;
-
 
 @SpringBootApplication
 public class Main {
@@ -53,10 +51,10 @@ public class Main {
             repoStore.saveAll(List.of(store1, store2, store3));
 
             // crear category y guarda
-            Category cat1 = new Category(null, "Categoria 1");
-            Category cat2 = new Category(null, "Categoria 2");
-            Category cat3 = new Category(null, "Categoria 3");
-            Category cat4 = new Category(null, "Categoria 4");
+            Category cat1 = new Category(null, "Categoria 1", store1);
+            Category cat2 = new Category(null, "Categoria 2", store1);
+            Category cat3 = new Category(null, "Categoria 3", store1);
+            Category cat4 = new Category(null, "Categoria 4", store1);
             repoCatego.saveAll(List.of(cat1, cat2, cat3, cat4 ));
 
         // Crear y guardar productos

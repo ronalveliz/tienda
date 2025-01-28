@@ -43,13 +43,13 @@ public class ProductosController {
         }
     }
 
-    @GetMapping("Productos/filter-by-category/{id}")
+    @GetMapping("productos/filter-by-category/{id}")
     public List<Productos> findAllByMenuId(@PathVariable Long id){
         return this.productoRepository.findAllByCategory_Id(id);
     }
 
 
-    @PostMapping("Productos")
+    @PostMapping("productos")
     public Productos create(
             @RequestParam(value = "photo", required = false) MultipartFile file,
             Productos productos){
@@ -65,7 +65,7 @@ public class ProductosController {
     }
 
 
-    @PutMapping("dishes/{id}")
+    @PutMapping("productos/{id}")
     public ResponseEntity<Productos> update(
             @PathVariable Long id,
             Productos productos,

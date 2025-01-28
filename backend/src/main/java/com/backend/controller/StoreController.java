@@ -88,7 +88,7 @@ public class StoreController {
 
 
     @PutMapping("/tineda/{id}")
-    public Store updateRestaurant(@PathVariable Long id,
+    public Store updateTienda(@PathVariable Long id,
                                        @RequestParam(value = "photo", required = false) MultipartFile file,
                                        @RequestParam MultiValueMap<String, String> formData) {
 

@@ -2,9 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Category } from '../interface/category';
 import { AuthenticationService } from '../authentication/authentication.service';
-import { Producto } from '../interface/productos';
+import { Category } from '../interface/category';
+import { Store } from '../interface/store';
 
 @Component({
   selector: 'app-categoria',
@@ -16,7 +16,7 @@ import { Producto } from '../interface/productos';
 export class CategoriaComponent implements OnInit {
 
   categoria: Category | undefined;
-  tienda: Storage | undefined;
+  tienda: Store | undefined;
 
   isUpdate: boolean = false;
 
@@ -26,8 +26,10 @@ export class CategoriaComponent implements OnInit {
   isLoggedin = false;
 
   categoryform = new FormGroup({
-    id: new FormControl<number>(0),
-    name: new FormControl<string>('')
+    id: new FormControl(0),
+    name: new FormControl(''),
+    tienda: new FormControl(),
+
   });
 
 
@@ -48,7 +50,7 @@ export class CategoriaComponent implements OnInit {
           return;
         }
         const tiendaUrl = 'http://localhost:8080/tiendas/' + id;
-        this.httpClient.get<Storage>(tiendaUrl)
+        this.httpClient.get<Store>(tiendaUrl)
         .subscribe(tienda => {
           this.tienda = tienda;
           this.categoryform.patchValue({
@@ -58,39 +60,34 @@ export class CategoriaComponent implements OnInit {
 
         this.httpClient.get<Category>('http://localhost:8080/category/' + id).subscribe(category =>{
           this.categoryform.reset(category);
-          this.categoryform.get('Tienda')?.setValue(category.tienda);
-
+          this.categoryform.get('tienda')?.setValue(category.tienda);
+          this.categoria = category;
+          this.isUpdate = true;
       } );
+    });
+  }
+  save(){
+    const categorys: Category = this.categoryform.value as Category;
 
+    let formData = new FormData();
+    formData.append('id', this.categoryform.get('id')?.value?.toString() ?? '0');
+    formData.append('name', this.categoryform.get('name')?.value ?? '');
+    formData.append('tienda', this.categoryform.get('tienda')?.value?.toString() ?? '0');
+
+    if (this.isUpdate){
+      this.httpClient.put<Category>('http://localhost:8080/category/' + categorys.id, formData)
+      .subscribe(response => {this.router.navigate(['/categorias'])});
+    }else{
+      this.httpClient.post<Category>('http://localhost:8080/category', formData)
+      .subscribe(response => {this.router.navigate(['/categorias'])});
+    }
+  }
+  compareObjects(o1: any, o2: any): boolean {
+
+    if (o1 && o2) {
+      return o1.id == o2.id;
     }
 
-
-
-
-
-    save(){
-      const formData = new FormData();
-      formData.append('name', this.categoryform.get('name')?.value ?? '');
-
-      const id = this.categoryform.get('id')?.value;
-      if (id && this.isUpdate){
-        this.httpClient.put<Category>(`http://localhost:8080/productos/${id}`, formData)
-        .subscribe(category =>{
-          this.router.navigate(['/categoria', category.id, 'detail']);
-        });
-      }else{
-        this.httpClient.post<Category>('http://localhost:8080/productos', formData)
-        .subscribe(category =>{
-          this.router.navigate(['/categoria', category.id, 'detail']);
-        })
-      }
-    }
-
-
-
-
+    return o1 == o2;
+  }
 }
-
-
-
-

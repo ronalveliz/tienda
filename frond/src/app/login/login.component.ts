@@ -2,7 +2,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
-
 import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../authentication/authentication.service';
 import { Login } from '../dto/login';
@@ -11,7 +10,7 @@ import { Token } from '../dto/token';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
@@ -27,6 +26,7 @@ export class LoginComponent {
         private httpClient: HttpClient,
         private authService: AuthenticationService,
         private router: Router) {}
+
         save() {
           const login: Login = {
             email: this.loginForm.get('email')?.value ?? '',
