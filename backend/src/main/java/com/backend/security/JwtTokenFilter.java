@@ -53,7 +53,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         // verificar el token
 
-        byte[] key = Base64.getDecoder().decode("wLd39ypA5uOeydsszUh3f6OXijomn+VVIpFlaDkF86w=");
+        byte[] key = Base64.getDecoder().decode("4QYC9CxV/6e9RKQDPLGx7eZLLIfTS3natiKdCU8mw8I=");
 
         String userId = Jwts.parser().verifyWith(Keys.hmacShaKeyFor(key)).build().parseSignedClaims(token).getPayload().getSubject();
 

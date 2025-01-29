@@ -1,11 +1,11 @@
 package com.backend.security;
 
-import io.jsonwebtoken.security.Password;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,21 +22,21 @@ public class JwtTokenConfig {
         return new BCryptPasswordEncoder();
     }
 
-    // Para versiones >= 6.1 de Spring Security
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
+    public SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
+        http.csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/users/login").permitAll()
-                        .requestMatchers("/users/register").permitAll()
-                        .requestMatchers("files/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "productos").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.PUT, "productos").hasAnyAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, "productos").hasAnyAuthority("ADMIN")
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("users/login", "users/register", "files/**", "users/account/avatar").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/productos", "category", "tienda").hasAnyAuthority("ADMIN", "TIENDA")
+                        .requestMatchers(HttpMethod.PUT, "/productos/**", "category", "tienda").hasAnyAuthority("ADMIN", "TIENDA")
+                        .requestMatchers(HttpMethod.DELETE, "/productos/**", "category").hasAnyAuthority("ADMIN", "TIENDA")
                         .anyRequest().authenticated()
-                ).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                );
+
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        return http.build();
     }
 }

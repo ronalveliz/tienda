@@ -26,11 +26,11 @@ public class ProductosController {
 
     @GetMapping("productos")
     public ResponseEntity<List<Productos>> findAll() {
-        List<Productos> dishes = productoRepository.findAll();
-        if (dishes.isEmpty()) {
+        List<Productos> productos = productoRepository.findAll();
+        if (productos.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(dishes);
+        return ResponseEntity.ok(productos);
     }
 
     @GetMapping("productos/{id}")
