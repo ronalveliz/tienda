@@ -30,9 +30,9 @@ public class JwtTokenConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("users/login", "users/register", "files/**", "users/account/avatar").permitAll()
                         .requestMatchers(HttpMethod.GET, "/productos/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/productos", "category", "tienda").hasAnyAuthority("ADMIN", "TIENDA")
-                        .requestMatchers(HttpMethod.PUT, "/productos/**", "category", "tienda").hasAnyAuthority("ADMIN", "TIENDA")
-                        .requestMatchers(HttpMethod.DELETE, "/productos/**", "category").hasAnyAuthority("ADMIN", "TIENDA")
+                        .requestMatchers(HttpMethod.POST, "/productos", "category", "tienda").hasAnyAuthority("ROLE_ADMIN", "ROLE_TIENDA")
+                        .requestMatchers(HttpMethod.PUT, "/productos/**", "category", "tienda").hasAnyAuthority("ROLE_ADMIN", "ROLE_TIENDA")
+                        .requestMatchers(HttpMethod.DELETE, "/productos/**", "category").hasAnyAuthority("ROLE_ADMIN", "ROLE_TIENDA")
                         .anyRequest().authenticated()
                 );
 

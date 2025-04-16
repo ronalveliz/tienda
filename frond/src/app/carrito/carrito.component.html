@@ -19,16 +19,16 @@
                             <tbody>
                                 @for (item of listaCarrito; track item.producto) {
                                     <tr>
-                                        <td>{{item.producto.name}}</td>
+                                        <td>{{item.producto.nombre}}</td>
                                         <td>
                                             <img
                                             [src]="item.producto.photoUrl.startsWith('http') ? item.producto.photoUrl : ('http://localhost:8080/files/' + item.producto.photoUrl)"
-                                            alt="{{item.producto.name}}" width="50" height="60"/>
+                                            alt="{{item.producto.nombre}}" width="50" height="60"/>
                                         </td>
-                                        <td>{{item.producto.price | number: '1.2-2'}}</td>
+                                        <td>{{item.producto.precio | number: '1.2-2'}}</td>
                                         <td>{{item.producto.category.name}}</td>
                                         <td><input type="number" class="form-control" [(ngModel)]="item.cantidad" min="1" (keydown)="onkeyDown($event)"></td>
-                                        <td>{{(item.producto.price * item.cantidad) | number: '1.2-2'}}</td>
+                                        <td>{{(item.producto.precio * item.cantidad) | number: '1.2-2'}}</td>
                                         <td>
                                             <button (click)="eliminarItem($index)" type="button" class="btn btn-danger btn-sm">
                                                 <i class="bi bi-trash"></i>

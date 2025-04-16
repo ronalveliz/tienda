@@ -10,6 +10,7 @@ Agrega el token JWT en una cabecera (header) de la petición HTTP
 */
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
   const token = localStorage.getItem("jwt_token");
+  console.log("JWT Token:", token);
 
   if (token) {
     req = req.clone({

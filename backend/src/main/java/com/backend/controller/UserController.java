@@ -74,7 +74,7 @@ public class UserController {
         long nextWeekMillis = TimeUnit.DAYS.toMillis(7);
         Date expirationDate = new Date(issuedDate.getTime() + nextWeekMillis);
 
-        byte[] key = Base64.getDecoder().decode("4QYC9CxV/6e9RKQDPLGx7eZLLIfTS3natiKdCU8mw8I=");
+        byte[] key = Base64.getDecoder().decode("4PWbGp0oV5si8hXJS0Hl/yk9RWX7SZK7DdckNx3e0cQ=");
 
         String token = Jwts.builder()
                 // id del usuario
@@ -86,7 +86,7 @@ public class UserController {
                 // Fecha de expiración del token
                 .expiration(expirationDate)
                 // información personalizada: rol, username, email...
-                .claim("role", user.getRolName())
+                .claim("rolname", user.getRolName())
                 .claim("email", user.getEmail())
                 // Construye el token
                 .compact();

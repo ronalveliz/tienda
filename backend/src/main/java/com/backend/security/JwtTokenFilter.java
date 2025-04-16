@@ -53,9 +53,13 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
         // verificar el token
 
-        byte[] key = Base64.getDecoder().decode("4QYC9CxV/6e9RKQDPLGx7eZLLIfTS3natiKdCU8mw8I=");
+        byte[] key = Base64.getDecoder().decode("4PWbGp0oV5si8hXJS0Hl/yk9RWX7SZK7DdckNx3e0cQ=");
 
-        String userId = Jwts.parser().verifyWith(Keys.hmacShaKeyFor(key)).build().parseSignedClaims(token).getPayload().getSubject();
+        String userId = Jwts.parser().verifyWith(Keys.hmacShaKeyFor(key))
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .getSubject();
 
         log.info(userId);
 
@@ -72,7 +76,7 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         // Crear objeto autenticacion con datos del usuario y guardarlo en el contexto de seguridad de spring Security
 
         User user = userOptional.get();
-        SimpleGrantedAuthority role = new SimpleGrantedAuthority(user.getRolName().toString());
+        SimpleGrantedAuthority role = new SimpleGrantedAuthority("ROLE_" + user.getRolName().toString());
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user,null, List.of(role));
         SecurityContextHolder.getContext().setAuthentication(auth);
 

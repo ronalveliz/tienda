@@ -32,7 +32,7 @@ export class ProductFormComponent implements OnInit {
     id: new FormControl<number>(0),
     name: new FormControl<string>(''),
     description: new FormControl<string>(''),
-    price: new FormControl<string>(''),
+    precio: new FormControl<string>(''),
     photoUrl: new FormControl<string>(''),
     descuento: new FormControl<boolean>(false),
     category: new FormControl(),
@@ -111,7 +111,7 @@ export class ProductFormComponent implements OnInit {
     const formValue = this.producForm.value;
     const productos: Producto = {
       ...formValue,
-      price: Number(formValue.price)
+      precio: Number(formValue.precio)
     } as Producto;
     productos.category = this.category;
 
@@ -119,7 +119,7 @@ export class ProductFormComponent implements OnInit {
     formData.append('id', this.producForm.get('id')?.value?.toString() ?? '0');
     formData.append('name', this.producForm.get('name')?.value ?? '');
     formData.append('description', this.producForm.get('description')?.value ?? '');
-    formData.append('price', this.producForm.get('price')?.value?.toString() ?? '');
+    formData.append('precio', this.producForm.get('precio')?.value?.toString() ?? '');
     formData.append('photoUrl', this.producForm.get('photoUrl')?.value ?? '');
     formData.append('descuento', this.producForm.get('descuento')?.value?.toString() ?? 'false');
     formData.append('category', this.producForm.get('category')?.value?.toString() ?? '0');

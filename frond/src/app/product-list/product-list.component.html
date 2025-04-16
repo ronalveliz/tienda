@@ -1,0 +1,81 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+
+      <h1 class="mt-5 mb-5">Listado de productos</h1>
+
+      @if (showDeletedBookMessage) {
+        <!--<ngb-alert type="success" [dismissible]="false">Libro borrado correctamente</ngb-alert>-->
+        <ngb-alert type="success" (closed)="hideDeletedBookMessage()">Producto borrado correctamente.</ngb-alert>
+      }
+
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Title</th>
+            <th scope="col">ISBN</th>
+            <th scope="col">Price (€)</th>
+            <th scope="col">Published</th>
+            <th scope="col">Release Date</th>
+            <th scope="col">Author</th>
+            <th scope="col">Editorial</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for ( producto of productos; track producto.id) {
+            <tr>
+              <th scope="row">{{producto}}</th>
+              <td>{{producto.id}}</td>
+              <td>{{producto.nombre}}</td>
+              <td>{{producto.category}}</td>
+              <td>
+                @if (productos) {
+                  <span class="badge text-bg-success">Sí</span>
+                } @else{
+                  <span class="badge text-bg-danger">No</span>
+                }
+              </td>
+              <td>
+                <button class="btn btn-info btn-sm" [routerLink]="['/producto', producto.id, 'detail']">Ver</button>
+                @if (isAdmin) {
+                  <button class="btn btn-success ms-2 btn-sm" [routerLink]="['/producto', producto.id, 'update']">Editar</button>
+                  <button class="btn btn-danger ms-2 btn-sm"
+                    (click)="openModal(modal, producto)">
+                    Borrar
+                  </button>
+                }
+              </td>
+            </tr>
+            }
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+</div>
+
+<ng-template #modal let-modal>
+	<div class="modal-header">
+		<h4 class="modal-title">Despublicar Producto</h4>
+		<button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cancelar')"></button>
+	</div>
+	<div class="modal-body">
+		<p>
+      Esta acción va a despublicar el Producto, por lo que ya no será accesible ni se podrá comprar.
+      ¿Está de acuerdo?
+    </p>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-success" (click)="modal.close('Aceptar')">
+      <i class="bi bi-check-lg me-2"></i>
+      Aceptar
+    </button>
+    <button type="button" class="btn btn-danger" (click)="modal.close('Cancelar')">
+      <i class="bi bi-x-circle me-2"></i>
+      Cancelar
+    </button>
+	</div>
+</ng-template>

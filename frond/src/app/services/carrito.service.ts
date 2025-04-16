@@ -40,7 +40,7 @@ export class CarritoService {
   }
 
   total(){
-    const total= this.listCarrito.reduce((sum , item) => sum + item.producto.price * item.cantidad , 0);
+    const total= this.listCarrito.reduce((sum , item) => sum + item.producto.precio * item.cantidad , 0);
     return total;
   }
 
@@ -50,7 +50,7 @@ export class CarritoService {
     }
     this.guardarSession();
   }
-  
+
   guardarSession(){
     localStorage.setItem('carrito', JSON.stringify(this.listCarrito));
   }
@@ -66,7 +66,7 @@ export class CarritoService {
       }
     }
   }
-  
+
 
   constructor() { }
 }

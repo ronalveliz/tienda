@@ -11,7 +11,7 @@
               <div class="card-img">
                 <img
                   [src]="item.photoUrl.startsWith('http') ? item.photoUrl : ('http://localhost:8080/files/' + item.photoUrl)"
-                  alt="{{item.name}}" width="100%" />
+                  alt="{{item.nombre}}" width="100%" />
               </div>
               <div class="card-body">
                 <p class="card-text">{{ item.description }}</p>

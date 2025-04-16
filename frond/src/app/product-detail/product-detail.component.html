@@ -1,17 +1,17 @@
 <div class="container">
     <div class="raw">
         <div class="col">
-            
+
     @if (productos) {
         <div width="250px">
             <img class="d-block mx-auto mb-4 "
-        
+
         [src]="productos.photoUrl.startsWith('http') ? productos.photoUrl : ('http://localhost:8080/files/' + productos.photoUrl)"
-        alt="{{productos.name}}" width="100%" />
+        alt="{{productos.nombre}}" width="100%" />
         </div>
-        <h1 class="mt-5 mb-5">Pantalla detalle de {{productos.name}}</h1>
-        <p>{{productos.id}}{{productos.name}}{{productos.category.name}}</p>
-    
+        <h1 class="mt-5 mb-5">Pantalla detalle de {{productos.nombre}}</h1>
+        <p>{{productos.id}}{{productos.nombre}}{{productos.category.name}}</p>
+
         <button class="btn btn-success" [routerLink]="['/productos', productos.id , 'update']">Editar producto</button>
     }
         </div>

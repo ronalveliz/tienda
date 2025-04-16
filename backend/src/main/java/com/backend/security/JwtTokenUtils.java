@@ -8,11 +8,6 @@ import java.util.Optional;
 
 public class JwtTokenUtils {
 
-   private
-
-    JwtTokenUtils() {
-    }
-
     public static Optional<User> getCurrentUser() {
 
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -22,16 +17,5 @@ public class JwtTokenUtils {
         } else {
             return Optional.empty();
         }
-    }
-    public static boolean isAdminCurrentUser() {
-
-        if (getCurrentUser().isEmpty()) {
-            return false;
-        }
-
-        User user = getCurrentUser().get();
-
-        return user.getRolName().equals(RolName.ADMIN);
-
     }
 }

@@ -23,6 +23,6 @@ public class KeyGeneratorTest {
         // Convertir a Base64 para mayor comodidad
         String base64Key = Base64.getEncoder().encodeToString(key);
         System.out.println(base64Key);
-        // Ejemplo: 4QYC9CxV/6e9RKQDPLGx7eZLLIfTS3natiKdCU8mw8I=
+        // Ejemplo: 4PWbGp0oV5si8hXJS0Hl/yk9RWX7SZK7DdckNx3e0cQ=
     }
 }

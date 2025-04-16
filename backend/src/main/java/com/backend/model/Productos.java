@@ -24,20 +24,24 @@ public class Productos {
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String nombre;
 
     private String description;
 
     @Column(nullable = false, precision = 10)
-    private Double price;
+    private Double precio;
 
     private String photoUrl;
 
     private Boolean descuento;
 
+    private Boolean published;
+
     @ManyToOne
     @JoinColumn(name = "categoria_id",referencedColumnName = "id")
     private Category category;
 
+    @Column(nullable = false, columnDefinition = "boolean default true")
+    private Boolean disponible = true;
 
 }

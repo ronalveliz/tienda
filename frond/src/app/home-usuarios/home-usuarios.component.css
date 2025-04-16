@@ -21,3 +21,31 @@
   object-position: center;/* Centra la imagen en caso de recorte */
   display: block;         /* Asegura que no haya espacio debajo de la imagen */
 }
+.card {
+  transition: all 0.3s ease;
+  border: 1px solid #eee;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.card-img-top {
+  background-color: #f8f9fa;
+}
+
+.badge {
+  font-size: 0.75rem;
+  padding: 0.35em 0.65em;
+}
+
+.btn-outline-primary {
+  border-width: 2px;
+}
+
+@media (max-width: 768px) {
+  .col-md-3 {
+    width: 50%;
+  }
+}

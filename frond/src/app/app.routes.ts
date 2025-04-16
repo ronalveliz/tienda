@@ -5,13 +5,23 @@ import { HomeComponent } from './home/home.component';
 import { CarritoComponent } from './carrito/carrito.component';
 import { UsuariosFormComponent } from './usuarios-form/usuarios-form.component';
 import { LoginComponent } from './login/login.component';
+import { ProductListComponent } from './product-list/product-list.component';
+import { HomeUsuariosComponent } from './home-usuarios/home-usuarios.component';
 
 
 
 export const routes: Routes = [
     {
         path:'',
-        component: HomeComponent
+        component: HomeUsuariosComponent
+    },
+    {
+      path:'home/usuarios',
+      component: HomeComponent
+    },
+    {
+      path:'productos/list',
+      component: ProductListComponent
     },
     {
         path:'productos/:id/detail',

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { DecodedToken } from '../dto/decoded.token';
 import { BehaviorSubject } from 'rxjs';
 import { jwtDecode } from 'jwt-decode';
@@ -18,6 +17,7 @@ export class AuthenticationService {
   constructor() {}
 
   saveToken(token: string) {
+    console.log('Saving token:', token);
     if (typeof localStorage !== 'undefined') {
       localStorage.setItem('jwt_token', token);
       this.isLoggedin.next(true);
@@ -53,6 +53,7 @@ export class AuthenticationService {
     const token = localStorage.getItem('jwt_token');
     if (!token) return '';
     const decodedToken = jwtDecode(token) as DecodedToken;
+
     return decodedToken.email;
   }
 

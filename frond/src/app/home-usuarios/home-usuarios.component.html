@@ -1,0 +1,70 @@
+<section class="layout">
+  <div class="body container-fluid">
+    <!-- Slider -->
+    <div id="carouselExample" class="carousel slide mb-4" data-bs-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="assets/slider1.jpg" class="d-block w-100" alt="Promoción 1">
+        </div>
+        <div class="carousel-item">
+          <img src="assets/slider2.jpg" class="d-block w-100" alt="Promoción 2">
+        </div>
+      </div>
+    </div>
+
+    <!-- Buscador -->
+    <div class="row mb-4">
+      <div class="col-md-6 mx-auto">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar productos..."
+          [(ngModel)]="searchTerm"
+          (input)="buscarProductos()"
+        >
+      </div>
+    </div>
+
+    <!-- Productos -->
+    <div class="row">
+      @for (item of productosFiltrados; track item.id) {
+      <div class="col-md-3 mb-4">
+        <div class="card h-100">
+          <div class="card-img-top" style="height: 200px; overflow: hidden;">
+            <img
+              [src]="getImageUrl(item.photoUrl)"
+              alt="{{item.nombre}}"
+              class="img-fluid w-100 h-100"
+              style="object-fit: cover;"
+            >
+          </div>
+          <div class="card-body">
+            <h5 class="card-title">{{item.nombre}}</h5>
+            <p class="card-text text-muted small">{{item.description}}</p>
+            <div class="d-flex justify-content-between align-items-center">
+              <strong class="text-primary">{{item.nombre | currency}}</strong>
+              @if (item.descuento) {
+                <span class="badge bg-danger">Oferta</span>
+              }
+            </div>
+            <div class="d-grid gap-2 mt-3">
+              <button
+                (click)="agregarProducto(item)"
+                class="btn btn-sm btn-outline-primary"
+              >
+                Agregar
+              </button>
+              <button
+                (click)="verDetalle(item.id)"
+                class="btn btn-sm btn-outline-secondary mt-2"
+              >
+                Ver detalles
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
+  </div>
+</section>
